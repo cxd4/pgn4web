@@ -2248,20 +2248,26 @@ function stripPgnText(formatOnly) {
       pgnGame[0] = theObj.value;
       numberOfGames = 1;
     }
-    var strippedPgnText = "", strippedHeader, strippedGame, strippedGameTokens, theMatch, theRegex, separator, lineLength, ii, jj;
+    var strippedPgnText = "", strippedHeader, strippedHeaderTokens, strippedGame, strippedGameTokens;
+    var theMatch, theRegex, separator, lineLength, ii, jj;
     for (ii = 0; ii < pgnGame.length; ii++) {
-      strippedHeader = pgnHeader[ii].replace(/[\n\r]+/g, " ");
-      if (!formatOnly) {
-        strippedHeader = strippedHeader.replace(/\[\s*\w+\s*""\s*\]/g, "");
+      if (formatOnly) {
+        strippedHeaderTokens = pgnHeader[ii].match(/\[\s*\w+\s*"[^"]*"\s*\]/g);
+      } else {
+        strippedHeaderTokens = pgnHeader[ii].match(/\[\s*(Event|Site|Date|Round|White|Black|Result)\s*"[^"]+"\s*\]/g);
       }
-      strippedHeader = strippedHeader.replace(/\s+\]/g, "]").replace(/\[\s+/g, "[");
+      strippedHeader = "";
+      if (strippedHeaderTokens) {
+        for (jj = 0; jj < strippedHeaderTokens.length; jj++) {
+          theMatch = strippedHeaderTokens[jj].match(/\[\s*(\w+)\s*"([^"]*)"\s*\]/);
+          strippedHeader += '[' + theMatch[1] + ' "' + theMatch[2].replace(/^\s+|\s+$/g, "") + '"]\n';
+        }
+      }
       strippedHeader = strippedHeader.replace(/\s{2,}/g, " ");
-      strippedHeader = strippedHeader.replace(/(^\s+|\s+$)/g, "");
-      strippedHeader = strippedHeader.replace(/\]\s*\[/g, "]\n[");
       if (!formatOnly) {
-        if (strippedHeader === "") { strippedHeader = '[X""]'; }
+        if (strippedHeader === "") { strippedHeader = '[X""]\n'; }
       }
-      strippedPgnText += strippedHeader + "\n\n";
+      strippedPgnText += strippedHeader + "\n";
       strippedGame = pgnGame[ii].replace(/[\n\r]+/g, " ");
       if (!formatOnly) {
         strippedGame = strippedGame.replace(/\b\d+\.+/g, " ");
@@ -2270,7 +2276,7 @@ function stripPgnText(formatOnly) {
         strippedGame = strippedGame.replace(/([a-h][18])=([A-Z])/g, "$1$2");
         strippedGame = strippedGame.replace(/([36])ep\b/g, "$1");
         if (theMatch = strippedHeader.match(/\[\s*Result\s+"([^"]+)"\s*\]/)) {
-          theRegex = new RegExp(theMatch[1] + "\s*$", "");
+          theRegex = new RegExp(theMatch[1].replace(/([\^$.|?*+(){[])/g, "\\$1") + "\\s*$", "");
           strippedGame = strippedGame.replace(theRegex, "");
         }
       }
