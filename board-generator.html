@@ -1817,7 +1817,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 
 <textarea id="pgnText" class="textbox" style="background-color: #DDFFDD; scrollbar-base-color: #DDFFDD;" rows=15 onChange="update_pgnTextLength(); update_suggested_iframe_dimensions();"></textarea>
 <table cellspacing="0" cellpadding="0" width="100%"><tr>
-<td align="left"><label class="helptext" for="pgnText">enter PGN data, optionally <a class="helplink" href="" onClick="if (confirm(event.shiftKey ? 'Format PGN data?' : 'Strip PGN data?\n\nStripping PGN data will reduce the data size: the chessboard should still display correctly, however the resulting data will not be strictly compliant to the PGN standard.')) { stripPgnText(event.shiftKey); } return false;">strip PGN data</a>, <a class="helplink" href="" onClick="if (pgnTextStripUndoValue) { if (confirm('Undo last PGN data strip?\n\nCurrent PGN data and any changes since the last strip will be lost.')) { pgnTextStripUndo(); } } else { alert('Undo data not available.'); } return false;">undo last strip</a></label></td>
+<td align="left"><label class="helptext" for="pgnText">enter PGN data, optionally <a class="helplink" href="" onClick="if (confirm('Strip PGN data?\n\nStripping PGN data will reduce the data size: the chessboard should still display correctly, however the resulting data will not be strictly compliant to the PGN standard.')) { stripPgnText(); } return false;">strip PGN data</a>, <a class="helplink" href="" onClick="if (pgnTextStripUndoValue) { if (confirm('Undo last PGN data strip?\n\nCurrent PGN data and any changes since the last strip will be lost.')) { pgnTextStripUndo(); } } else { alert('Undo data not available.'); } return false;">undo last strip</a></label></td>
 <td align="right"><span class="helptext" id="pgnTextLength"></span></td>
 </tr></table>
 <p></p>
@@ -2236,7 +2236,7 @@ for (ii = 0; ii < theObj.length; ii++) {
 
 var pgnTextStripUndoValue;
 
-function stripPgnText(formatOnly) {
+function stripPgnText() {
   var theObj = document.getElementById("pgnText");
   if (theObj) {
     pgnHeader = new Array();
@@ -2248,59 +2248,51 @@ function stripPgnText(formatOnly) {
       pgnGame[0] = theObj.value;
       numberOfGames = 1;
     }
-    var strippedPgnText = "", strippedHeader, strippedHeaderTokens, strippedGame, strippedGameTokens;
-    var theMatch, theRegex, separator, lineLength, ii, jj;
+    var strippedPgnText = "", strippedHeader, strippedGame, theTokens, theMatch, theRegex, ii, jj;
+
     for (ii = 0; ii < pgnGame.length; ii++) {
-      if (formatOnly) {
-        strippedHeaderTokens = pgnHeader[ii].match(/\[\s*\w+\s*"[^"]*"\s*\]/g);
-      } else {
-        strippedHeaderTokens = pgnHeader[ii].match(/\[\s*(Event|Site|Date|Round|White|Black|Result)\s*"[^"]+"\s*\]/g);
-      }
       strippedHeader = "";
-      if (strippedHeaderTokens) {
-        for (jj = 0; jj < strippedHeaderTokens.length; jj++) {
-          theMatch = strippedHeaderTokens[jj].match(/\[\s*(\w+)\s*"([^"]*)"\s*\]/);
-          strippedHeader += '[' + theMatch[1] + ' "' + theMatch[2].replace(/^\s+|\s+$/g, "") + '"]\n';
+      if (theTokens = pgnHeader[ii].match(/\[\s*(Event|Site|Date|Round|White|Black|Result|FEN|Variant)\s*"[^"]+"\s*\]/g)) { // rebuild header leaving only header tags used by board.html
+        for (jj = 0; jj < theTokens.length; jj++) {
+          theMatch = theTokens[jj].match(/\[\s*(\w+)\s*"([^"]*)"\s*\]/);
+          if ((theMatch[1] != "Variant") || (!theMatch[2].match(/^\s*(|chess|normal|standard)\s*$/))) {
+            strippedHeader += '[' + theMatch[1] + ' "' + theMatch[2].replace(/^\s+|\s+$/g, "") + '"]\n';
+          }
         }
       }
-      strippedHeader = strippedHeader.replace(/\s{2,}/g, " ");
-      if (!formatOnly) {
-        if (strippedHeader === "") { strippedHeader = '[X""]\n'; }
-      }
-      strippedPgnText += strippedHeader + "\n";
-      strippedGame = pgnGame[ii].replace(/[\n\r]+/g, " ");
-      if (!formatOnly) {
-        strippedGame = strippedGame.replace(/\b\d+\.+/g, " ");
-        strippedGame = strippedGame.replace(/(\w)[+#](\W)/g, "$1$2");
-        strippedGame = strippedGame.replace(/(\w)(x|:)([a-h][1-8])\b/g, "$1$3");
-        strippedGame = strippedGame.replace(/([a-h][18])=([A-Z])/g, "$1$2");
-        strippedGame = strippedGame.replace(/([36])ep\b/g, "$1");
-        if (theMatch = strippedHeader.match(/\[\s*Result\s+"([^"]+)"\s*\]/)) {
-          theRegex = new RegExp(theMatch[1].replace(/([\^$.|?*+(){[])/g, "\\$1") + "\\s*$", "");
-          strippedGame = strippedGame.replace(theRegex, "");
+      if (strippedHeader === "") { strippedHeader = '[X""]\n'; }
+
+      strippedGame = pgnGame[ii];
+      strippedGame = strippedGame.replace(/(^|\n)%[^\n]*(\n|$)/, "$1$2"); // remove lines starting %
+      strippedGame = strippedGame.replace(/\b\d+\.+/g, " "); // remove move numbers
+      strippedGame = strippedGame.replace(/(\w)[+#](\W)/g, "$1$2"); // remove check and mate signs
+      strippedGame = strippedGame.replace(/(\w)(x|:)([a-h][1-8])\b/g, "$1$3"); // remove capture signs
+      strippedGame = strippedGame.replace(/([a-h][18])=([A-Z])/g, "$1$2"); // remove promotion sign
+      strippedGame = strippedGame.replace(/([36])ep\b/g, "$1"); // remove en passant text
+      if (theTokens = strippedGame.split("\n")) { // compact lines unless a ; char is present
+        strippedGame = "";
+        for (jj = 0; jj < theTokens.length; jj++) {
+          if ((jj === 0) || (theTokens[jj - 1].indexOf(";") < 0)) {
+            strippedGame += " " + theTokens[jj].replace(/(^\s+|\s+$)/g, "");
+          } else {
+            strippedGame += "\n" + theTokens[jj].replace(/(^\s+|\s+$)/g, "");
+          }
         }
       }
-      strippedGame = strippedGame.replace(/\s+([})])/g, "$1").replace(/([{(])\s+/g, "$1");
-      strippedGame = strippedGame.replace(/\s{2,}/g, " ");
-      strippedGame = strippedGame.replace(/(^\s+|\s+$)/g, "");
-      strippedGameTokens = strippedGame.split(" ");
-      lineLength = 0;
-      for (jj = 0; jj < strippedGameTokens.length; jj++) {
-        separator = lineLength ? " " : "";
-        if (lineLength + separator.length + strippedGameTokens[jj].length < 80) {
-          strippedPgnText += separator + strippedGameTokens[jj];
-          lineLength += separator.length + strippedGameTokens[jj].length;
-        } else {
-          strippedPgnText += "\n" + strippedGameTokens[jj];
-          lineLength = strippedGameTokens[jj].length;
-        }
+      strippedGame = strippedGame.replace(/ +([})\]])/g, "$1").replace(/([{(\[]) +/g, "$1"); // remove space before/after round/curly/square brackets
+      if (theMatch = strippedHeader.match(/\[\s*Result\s+"([^"]+)"\s*\]/)) { // remove result at the end of game if matching the Result header tag
+        theRegex = new RegExp(theMatch[1].replace(/([\^$.|?*+(){[])/g, "\\$1") + "\\s*$", "");
+        strippedGame = strippedGame.replace(theRegex, "");
       }
-      strippedPgnText += "\n\n";
-      if (!formatOnly) {
-        if (numberOfGames == 1) { strippedPgnText = strippedPgnText.replace(/\[X""\][\n\r\s]*/g, ""); }
-      }
+      strippedGame = strippedGame.replace(/(^\s+|\s+$)/g, ""); // remove leading/closing spaces
+
+      strippedPgnText += strippedHeader + strippedGame + "\n\n";
     }
-    strippedPgnText = strippedPgnText.replace(/(^[\n\r\s]+|[\n\r\s]+$)/g, "");
+    if (numberOfGames == 1) { strippedPgnText = strippedPgnText.replace(/\[X""\]\s*/g, ""); }
+    strippedPgnText = strippedPgnText.replace(/ {2,}/g, " "); // reduce sequential spaces
+    strippedPgnText = strippedPgnText.replace(/(\n{2})\n+/g, "$1"); // reduce sequential empty lines
+    strippedPgnText = strippedPgnText.replace(/(\n) +/g, "$1");
+    strippedPgnText = strippedPgnText.replace(/(^\s+|\s+$)/g, ""); // remove leading/closing spaces
     if (strippedPgnText != theObj.value) {
       pgnTextStripUndoValue = theObj.value;
       theObj.value = strippedPgnText;
