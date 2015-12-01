@@ -2285,10 +2285,14 @@ function stripPgnText() {
         strippedGame = strippedGame.replace(theRegex, "");
       }
       strippedGame = strippedGame.replace(/(^\s+|\s+$)/g, ""); // remove leading/closing spaces
+      if (strippedGame === "") { strippedGame = ";"; }
 
       strippedPgnText += strippedHeader + strippedGame + "\n\n";
     }
-    if (numberOfGames == 1) { strippedPgnText = strippedPgnText.replace(/\[X""\]\s*/g, ""); }
+    if (numberOfGames == 1) {
+      strippedPgnText = strippedPgnText.replace(/\[X""\]\s*/g, "");
+    }
+    strippedPgnText = strippedPgnText.replace(/;\s*$/, "");
     strippedPgnText = strippedPgnText.replace(/ {2,}/g, " "); // reduce sequential spaces
     strippedPgnText = strippedPgnText.replace(/(\n{2})\n+/g, "$1"); // reduce sequential empty lines
     strippedPgnText = strippedPgnText.replace(/(\n) +/g, "$1");
