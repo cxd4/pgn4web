@@ -1925,11 +1925,11 @@ function checkLiveBroadcastStatus() {
     theTitle = "live broadcast yet to start";
   } else {
     // yes
-    var lbgr = 0;
-    for (ii=0; ii<numberOfGames; ii++) { if (gameResult[ii].indexOf('*') >= 0) { lbgr++; } }
-    LiveBroadcastEnded = (lbgr === 0);
+    var lbgr = 0, lbga = 0;
+    for (ii=0; ii<numberOfGames; ii++) { if (gameResult[ii].indexOf('*') >= 0) { lbga++; if (!pgnGame[ii].match(/^\s*\*?\s*$/)) { lbgr++; } } }
+    LiveBroadcastEnded = (lbga === 0);
     LiveBroadcastGamesRunning = lbgr;
-    theTitle = LiveBroadcastEnded ? "live broadcast ended" : LiveBroadcastPaused ? "live broadcast paused" : lbgr + " live game" + (lbgr > 1 ? "s" : "") + " out of " + numberOfGames;
+    theTitle = LiveBroadcastEnded ? "live broadcast ended" : LiveBroadcastPaused ? "live broadcast paused" : lbgr + " live game" + (lbgr == 1 ? "" : "s") + " out of " + numberOfGames;
   }
   theHTML = LiveBroadcastEnded ? "#" : LiveBroadcastPaused ? "+" : "=";
   theHTML = (LiveBroadcastTicker % 4 === 0 ? theHTML : "&nbsp;") + (LiveBroadcastTicker % 2 === 1 ? theHTML : "&nbsp;") + (LiveBroadcastTicker % 4 === 2 ? theHTML : "&nbsp;");
