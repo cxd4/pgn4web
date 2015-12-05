@@ -189,8 +189,11 @@ function shorten_url_with_bitly(bitly_login, bitly_apiKey) {
 function shorten_url_with_tinyurl() {
   document.getElementById("shorturl_link_separator").innerHTML = "<b>:</b> ";
 
-  var thisShortUrlCrc32 = printHex(crc32(iframeUrl));
-  document.getElementById('tinyurl_form_shorturl_url').value = iframeUrl;
+  var thisLink = document.createElement("a");
+  thisLink.href = iframeUrl;
+  var thisIframeUrl = thisLink.href;
+  var thisShortUrlCrc32 = printHex(crc32(thisIframeUrl));
+  document.getElementById('tinyurl_form_shorturl_url').value = thisIframeUrl;
   document.getElementById('tinyurl_form_shorturl_alias').value = "pgn4web-" + thisShortUrlCrc32;
   document.getElementById('shorturl_link').title = "pgn4web board short url #" + thisShortUrlCrc32;
 
@@ -2256,7 +2259,9 @@ function stripPgnText() {
         for (jj = 0; jj < theTokens.length; jj++) {
           theMatch = theTokens[jj].match(/\[\s*(\w+)\s*"([^"]*)"\s*\]/);
           if ((theMatch[1] != "Variant") || (!theMatch[2].match(/^\s*(|chess|normal|standard)\s*$/))) {
-            strippedHeader += '[' + theMatch[1] + ' "' + theMatch[2].replace(/^\s+|\s+$/g, "") + '"]\n';
+            if (theMatch[2] = theMatch[2].replace(/[?.]+/g, "").replace(/^\s+|\s+$/g, "")) { // remove ? from header tags
+              strippedHeader += '[' + theMatch[1] + ' "' + theMatch[2] + '"]\n';
+            }
           }
         }
       }
@@ -2279,7 +2284,9 @@ function stripPgnText() {
           }
         }
       }
+      strippedGame = strippedGame.replace(/{\s*D\s*}|(\bDiagram\s+)?\[#\]/ig, " "); // remove diagram markers
       strippedGame = strippedGame.replace(/ +([})\]])/g, "$1").replace(/([{(\[]) +/g, "$1"); // remove space before/after round/curly/square brackets
+      strippedGame = strippedGame.replace(/\[\s*\]/g, " ").replace(/{\s*}/g, " ").replace(/\(\s*\)/g, " "); // remove empty comments and variations
       if (theMatch = strippedHeader.match(/\[\s*Result\s+"([^"]+)"\s*\]/)) { // remove result at the end of game if matching the Result header tag
         theRegex = new RegExp(theMatch[1].replace(/([\^$.|?*+(){[])/g, "\\$1") + "\\s*$", "");
         strippedGame = strippedGame.replace(theRegex, "");
