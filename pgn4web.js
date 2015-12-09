@@ -712,7 +712,7 @@ function displayDebugInfo() {
     dbg3 += '\nVARIANT: ' + gameVariant[currentGame];
   }
   if (LiveBroadcastDelay > 0) {
-    dbg3 += '\n\nLIVEBROADCAST: status=' + liveStatusDebug() + ' ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime();
+    dbg3 += '\n\nLIVEBROADCAST: status=' + liveStatusDebug() + (LiveBroadcastEndlessMode ? '/endless ' : '') + ' ticker=' + LiveBroadcastTicker + ' delay=' + LiveBroadcastDelay + 'm' + '\n' + 'refreshed: ' + LiveBroadcastLastRefreshedLocal + '\n' + 'received: ' + LiveBroadcastLastReceivedLocal + '\n' + 'modified (server time): ' + LiveBroadcastLastModified_ServerTime();
   }
   if (typeof(engineWinCheck) == "function") {
     dbg3 += '\n\nANALYSIS: ' + (engineWinCheck() ? 'board=connected ' + engineWin.customDebugInfo() : 'board=disconnected');
@@ -934,6 +934,7 @@ var LiveBroadcastPlaceholderPgn = '[Event "' + LiveBroadcastPlaceholderEvent + '
 var gameDemoMaxPly = new Array();
 var gameDemoLength = new Array();
 var LiveBroadcastSteppingMode = false;
+var LiveBroadcastEndlessMode = false;
 
 var ParseLastMoveError = false;
 
@@ -1927,7 +1928,7 @@ function checkLiveBroadcastStatus() {
     // yes
     var lbgr = 0, lbga = 0;
     for (ii=0; ii<numberOfGames; ii++) { if (gameResult[ii].indexOf('*') >= 0) { lbga++; if (!pgnGame[ii].match(/^\s*\*?\s*$/)) { lbgr++; } } }
-    LiveBroadcastEnded = (lbga === 0);
+    LiveBroadcastEnded = ((lbga === 0) && (!LiveBroadcastEndlessMode));
     LiveBroadcastGamesRunning = lbgr;
     theTitle = LiveBroadcastEnded ? "live broadcast ended" : LiveBroadcastPaused ? "live broadcast paused" : lbgr + " live game" + (lbgr == 1 ? "" : "s") + " out of " + numberOfGames;
   }
@@ -3864,11 +3865,12 @@ function SetAutoplayDelayAndStart(vv) {
   SetAutoPlay(true);
 }
 
-function SetLiveBroadcast(delay, alertFlag, demoFlag, stepFlag) {
+function SetLiveBroadcast(delay, alertFlag, demoFlag, stepFlag, endlessFlag) {
   LiveBroadcastDelay = delay; // zero delay: no live broadcast
   LiveBroadcastAlert = (alertFlag === true);
   LiveBroadcastDemo = (demoFlag === true);
   LiveBroadcastSteppingMode = (stepFlag === true);
+  LiveBroadcastEndlessMode = (endlessflag === true);
   setG7A6B6H7boardShortcuts();
 }
 

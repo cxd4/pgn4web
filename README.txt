@@ -120,7 +120,7 @@ Example:
     SetInitialHalfmove(0,false); // halfmove number to be shown at load, 0 (default) for start position; values (keep the quotes) of "start", "end", "random", "comment" (go to first comment or variation), "variation" (go to the first variation) are also accepted. Second parameter if true applies the setting to every selected game instead of startup only
     SetShortcutKeysEnabled(false);
 
-    SetLiveBroadcast(1, false, false, false); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false)
+    SetLiveBroadcast(1, false, false, false, false); // set live broadcast; parameters are delay (refresh delay in minutes, 0 means no broadcast, default 0) alertFlag (if true, displays debug error messages, default false) demoFlag (if true starts broadcast demo mode, default false) stepFlag (if true, autoplays updates in steps, default false) endlessFlag (if true, keeps polling for new moves even after all games are finished)
 
   </script>
 
@@ -239,24 +239,29 @@ page or your blog.
 
 THE LIVE BROADCAST OF GAMES
 
-By setting the SetLiveBroadcast(delay, alertFlag, demoFlag, stepFlag) option
+By setting SetLiveBroadcast(delay, alertFlag, demoFlag, stepFlag, endlessFlag)
 in the HTML file, pgn4web will periodically refresh the PGN file, showing the
 live progress of the games. PGN files produced by the DGT chessboards are
 supported.
 
-SetLiveBroadcast(delay, alertFlag, demoFlag, stepFlag) parameters:
+SetLiveBroadcast(delay, alertFlag, demoFlag, stepFlag, endlessFlag) parameters:
  - delay = refresh interval in minutes, decimals allowed (default 1)
  - alertFlag = if set true, shows alert debug messages (default false)
  - demoFlag = if set true, sets live demo mode (default false)
  - stepFlag = if set true, autoplays updates in steps (default false)
+ - endlessFlag = if set true, keeps polling for new moves even atfer all games
+   are finished (default false)
 
 If you set stepFlag, please note that the autoplay delay is set by
 SetAutoplayDelay(delay), where no more than 2000ms should be used for live
 broadcasts.
 
+By default, polling for new moves stops once all games are finished; a game is
+deemed finished when the Result header tag is different from "*"); when
+endlessFlag is set, the polling for new moves continues endlessly.
+
 The bash shell script live-grab.sh, executed on your server allows for grabbing
 the updated game source from anywhere on the Internet to your server.
-The live broadcast stops refreshing once all games are ended.
 
 Clock information as provided by the DGT chessboards in PGN move comments, such
 as {[%clk 1:59:59]}, and in the PGN header, such as [WhiteClock "2:00:00"],
