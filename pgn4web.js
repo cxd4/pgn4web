@@ -3870,7 +3870,7 @@ function SetLiveBroadcast(delay, alertFlag, demoFlag, stepFlag, endlessFlag) {
   LiveBroadcastAlert = (alertFlag === true);
   LiveBroadcastDemo = (demoFlag === true);
   LiveBroadcastSteppingMode = (stepFlag === true);
-  LiveBroadcastEndlessMode = (endlessflag === true);
+  LiveBroadcastEndlessMode = (endlessFlag === true);
   setG7A6B6H7boardShortcuts();
 }
 
