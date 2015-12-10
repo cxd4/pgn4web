@@ -1,5 +1,5 @@
 # pgn4web javascript chessboard
-# copyright (C) 2009-2014 Paolo Casaschi
+# copyright (C) 2009-2015 Paolo Casaschi
 # see README file and http://pgn4web.casaschi.net
 # for credits, license and more details
 
@@ -8,7 +8,7 @@
 
 set +o posix
 
-pgn4webVer=$(grep "var pgn4web_version = " pgn4web.js | awk -F "\'" '{print$2}')
+pgn4webVer=$(grep "var pgn4web_version = " pgn4web.js | awk -F "'" '{print$2}')
 
 if [ "$1" == "full" ]; then
   pgn4webFilename="pgn4web-full-$pgn4webVer.zip"
