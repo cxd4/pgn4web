@@ -788,8 +788,8 @@ function CurrentFEN() {
           thisFEN += emptySquares;
           emptySquares = 0;
         }
-        if (Board[col][row] > 0) { thisFEN += FenPieceName.charAt(Board[col][row]-1).toUpperCase(); }
-        else if (Board[col][row] < 0) { thisFEN += FenPieceName.charAt(-Board[col][row]-1).toLowerCase(); }
+        if (Board[col][row] > 0) { thisFEN += PiecesArr[Board[col][row]-1].toUpperCase(); }
+        else if (Board[col][row] < 0) { thisFEN += PiecesArr[-Board[col][row]-1].toLowerCase(); }
       }
     }
     if (emptySquares) {
@@ -804,10 +804,10 @@ function CurrentFEN() {
   // castling availability: always in the KQkq form
   // note: wrong FEN for Chess960 positions with inner castling rook
   var CastlingFEN = "";
-  if (RookForOOCastling(0) !== null) { CastlingFEN += FenPieceName.charAt(0).toUpperCase(); }
-  if (RookForOOOCastling(0) !== null) { CastlingFEN += FenPieceName.charAt(1).toUpperCase(); }
-  if (RookForOOCastling(1) !== null) { CastlingFEN += FenPieceName.charAt(0).toLowerCase(); }
-  if (RookForOOOCastling(1) !== null) { CastlingFEN += FenPieceName.charAt(1).toLowerCase(); }
+  if (RookForOOCastling(0) !== null) { CastlingFEN += PiecesArr[0].toUpperCase(); }
+  if (RookForOOOCastling(0) !== null) { CastlingFEN += PiecesArr[1].toUpperCase(); }
+  if (RookForOOCastling(1) !== null) { CastlingFEN += PiecesArr[0].toLowerCase(); }
+  if (RookForOOOCastling(1) !== null) { CastlingFEN += PiecesArr[1].toLowerCase(); }
   thisFEN += " " + (CastlingFEN || "-");
 
   if (HistEnPassant[CurrentPly]) {
@@ -994,8 +994,7 @@ HistEnPassantCol[0] = -1;
 var HistNull = new Array();
 HistNull[0] = 0;
 
-var FenPieceName = "KQRBNP";
-var PieceCode = FenPieceName.split(""); // bugfix: IE needs array for [index]
+var PiecesArr = "KQRBNP".split("");
 var FenStringStart = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 var columnsLetters = "ABCDEFGH";
 var InitialHalfMoveClock = 0;
@@ -2215,7 +2214,7 @@ function InitFEN(startingFEN) {
           return;
         }
       }
-      if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(0)) {
+      if (cc === PiecesArr[0].toUpperCase()) {
         if (PieceType[0][0] != -1) {
           myAlertFEN(FenString, "char " + ll);
           InitFEN();
@@ -2225,8 +2224,7 @@ function InitFEN(startingFEN) {
         PieceCol[0][0] = ii;
         PieceRow[0][0] = jj;
         ii++;
-      }
-      if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(0)) {
+      } else if (cc === PiecesArr[0].toLowerCase()) {
         if (PieceType[1][0] != -1) {
           myAlertFEN(FenString, "char " + ll);
           InitFEN();
@@ -2238,7 +2236,7 @@ function InitFEN(startingFEN) {
         ii++;
       }
       for (kk = 1; kk < 6; kk++) {
-        if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(kk)) {
+        if (cc === PiecesArr[kk].toUpperCase()) {
           if (nn == 16) {
             myAlertFEN(FenString, "char " + ll);
             InitFEN();
@@ -2249,8 +2247,7 @@ function InitFEN(startingFEN) {
           PieceRow[0][nn] = jj;
           nn++;
           ii++;
-        }
-        if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(kk)) {
+        } else if (cc === PiecesArr[kk].toLowerCase()) {
           if (mm==16) {
             myAlertFEN(FenString, "char " + ll);
             InitFEN();
@@ -2309,7 +2306,7 @@ function InitFEN(startingFEN) {
     CastlingShort = [-1, -1];
     cc = FenString.charAt(ll++);
     while (cc!=" ") {
-      if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(0)) {
+      if (cc === PiecesArr[0].toUpperCase()) {
         for (CastlingShort[0] = 7; CastlingShort[0] > PieceCol[0][0]; CastlingShort[0]--) {
           if (Board[CastlingShort[0]][0] == 3) { break; }
         }
@@ -2317,8 +2314,7 @@ function InitFEN(startingFEN) {
           myAlertFEN(FenString, "missing castling Rook " + cc);
           CastlingShort[0] = -1;
         }
-      }
-      if (cc.charCodeAt(0) == FenPieceName.toUpperCase().charCodeAt(1)) {
+      } else if (cc === PiecesArr[1].toUpperCase()) {
         for (CastlingLong[0] = 0; CastlingLong[0] < PieceCol[0][0]; CastlingLong[0]++) {
           if (Board[CastlingLong[0]][0] == 3) { break; }
         }
@@ -2326,8 +2322,7 @@ function InitFEN(startingFEN) {
           myAlertFEN(FenString, "missing castling Rook " + cc);
           CastlingLong[0] = -1;
         }
-      }
-      if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(0)) {
+      } else if (cc === PiecesArr[0].toLowerCase()) {
         for (CastlingShort[1] = 7; CastlingShort[1] > PieceCol[1][0]; CastlingShort[1]--) {
           if (Board[CastlingShort[1]][7] == -3) { break; }
         }
@@ -2335,8 +2330,7 @@ function InitFEN(startingFEN) {
           myAlertFEN(FenString, "missing castling Rook " + cc);
           CastlingShort[1] = -1;
         }
-      }
-      if (cc.charCodeAt(0) == FenPieceName.toLowerCase().charCodeAt(1)) {
+      } else if (cc === PiecesArr[1].toLowerCase()) {
         for (CastlingLong[1] = 0; CastlingLong[1] < PieceCol[1][0]; CastlingLong[1]++) {
           if (Board[CastlingLong[1]][7] == -3) { break; }
         }
@@ -2426,20 +2420,18 @@ function assumedCastleRights() {
   if ((PieceRow[0][0] === 0) && (PieceCol[0][0] === 4)) {
     for (ii = 0; ii < PieceType[0].length; ii++) {
       if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] === 7)) {
-        rights += FenPieceName.charAt(0).toUpperCase();
-      }
-      if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] === 0)) {
-        rights += FenPieceName.charAt(1).toUpperCase();
+        rights += PiecesArr[0].toUpperCase();
+      } else if ((PieceType[0][ii] === 3) && (PieceRow[0][ii] === 0) && (PieceCol[0][ii] === 0)) {
+        rights += PiecesArr[1].toUpperCase();
       }
     }
   }
   if ((PieceRow[1][0] === 7) && (PieceCol[1][0] === 4)) {
     for (ii = 0; ii < PieceType[1].length; ii++) {
       if ((PieceType[1][ii] === 3) && (PieceRow[1][ii] === 7) && (PieceCol[1][ii] === 7)) {
-        rights += FenPieceName.charAt(0).toLowerCase();
-      }
-      if ((PieceType[1][ii] === 3) && (PieceRow[1][ii] === 7) && (PieceCol[1][ii] === 0)) {
-        rights += FenPieceName.charAt(1).toLowerCase();
+        rights += PiecesArr[0].toLowerCase();
+      } else if ((PieceType[1][ii] === 3) && (PieceRow[1][ii] === 7) && (PieceCol[1][ii] === 0)) {
+        rights += PiecesArr[1].toLowerCase();
       }
     }
   }
@@ -3196,7 +3188,7 @@ function ParseMove(move, plyCount) {
   mvPiece = -1; // make sure mvPiece is properly assigned later
   if (ll === 0) { mvPiece = 6; }
   else {
-    for (ii = 5; ii > 0; ii--) { if (rem.charAt(0) == PieceCode[ii-1]) { mvPiece = ii; break; } }
+    for (ii = 5; ii > 0; ii--) { if (rem.charAt(0) == PiecesArr[ii-1]) { mvPiece = ii; break; } }
     if (mvPiece == -1) { if (columnsLetters.toLowerCase().indexOf(rem.charAt(0)) >= 0) { mvPiece = 6; } }
     if (mvPiece == -1) { return false; }
     if (rem.charAt(ll-1) == 'x') { mvCapture = 1; }
@@ -3216,7 +3208,6 @@ function ParseMove(move, plyCount) {
     if ( (mvPiece == 6) && (!mvCapture) && (mvFromCol == -1) && (mvFromRow == -1) ) { return false; }
   }
 
-  mvPieceOnTo = mvPiece;
   // "square to" occupied: capture (note en-passant case)
   if ((Board[mvToCol][mvToRow] !== 0) ||
       ((mvPiece == 6) &&
@@ -3225,16 +3216,17 @@ function ParseMove(move, plyCount) {
        (mvToRow == 5-3*MoveColor)))
   { mvCapture = 1; }
 
+  mvPieceOnTo = mvPiece;
   if (mvPiece == 6) {
     // move contains '=' or char after destination row: might be a promotion
     ii = move.indexOf('=');
     if (ii < 0) { ii = toRowMarker; }
     if ((ii > 0) && (ii < move.length-1)) {
       var newPiece = move.charAt(ii+1);
-      if (newPiece == PieceCode[1]) { mvPieceOnTo = 2; }
-      else if (newPiece == PieceCode[2]) { mvPieceOnTo = 3; }
-      else if (newPiece == PieceCode[3]) { mvPieceOnTo = 4; }
-      else if (newPiece == PieceCode[4]) { mvPieceOnTo = 5; }
+      if (newPiece == PiecesArr[1]) { mvPieceOnTo = 2; }
+      else if (newPiece == PiecesArr[2]) { mvPieceOnTo = 3; }
+      else if (newPiece == PiecesArr[3]) { mvPieceOnTo = 4; }
+      else if (newPiece == PiecesArr[4]) { mvPieceOnTo = 5; }
       if (mvPieceOnTo != mvPiece) { mvIsPromotion = 1; }
     }
     if ((mvToRow == 7 * (1-MoveColor)) ? !mvIsPromotion : mvIsPromotion) { return false; }
@@ -3264,7 +3256,7 @@ function ParseMove(move, plyCount) {
   }
 
   // check move legality
-  if (!CheckLegality(PieceCode[mvPiece-1], plyCount)) { return false; }
+  if (!CheckLegality(PiecesArr[mvPiece-1], plyCount)) { return false; }
 
   // pawn moved: check en-passant possibility
   if (mvPiece == 6) {
@@ -3461,7 +3453,6 @@ function PrintHTML() {
   if (theObj = document.getElementById("GameSelector")) {
     if (firstStart) { textSelectOptions=''; }
     if (numberOfGames < 2) {
-      // theObj.innerHTML = ''; // bugfix: replaced with code below to cope with IE issue
       while (theObj.firstChild) { theObj.removeChild(theObj.firstChild); }
       textSelectOptions = '';
     } else {
@@ -3577,7 +3568,6 @@ function PrintHTML() {
 
   if ((theObj = document.getElementById("GameSearch")) && firstStart) {
     if (numberOfGames < 2) {
-      // theObj.innerHTML = ''; // bugfix: replaced with code below to cope with IE issue
       while (theObj.firstChild) { theObj.removeChild(theObj.firstChild); }
     } else {
       text = '<FORM ID="searchPgnForm" STYLE="display: inline;" ' +

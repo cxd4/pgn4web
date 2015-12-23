@@ -130,3 +130,10 @@ could pass } 1. -- Kc7 ({ a simple win } $18 1.. Kc7 2. Ke7)) -- (* { also
 lost if Black passes} $18 2. Kc6 Ke7) 2. Kd5?? { this is a blunder } Kd7 $11
 Kd4 Kd6 Ke4 Ke6 *
 
+[Event "Testing FEN castling rights"]
+[Round "15"]
+[SetUp "1"]
+[FEN "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w Qk - 0 1"]
+
+1. O-O-O O-O
+
