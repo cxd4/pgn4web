@@ -1,5 +1,25 @@
 [Event "London league"]
 [Site "London ENG"]
+[Date "2016.01.27"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Ward, Chris"]
+[Result "0-1"]
+[ECO "A31"]
+[Opening "English"]
+[Variation "symmetrical, Benoni formation"]
+
+1. d4 Nf6 2. c4 c5 3. Nf3 e6 4. g3 cxd4 5. Nxd4 Qb6 6. Bg2 Bc5 7. e3 Nc6 {
+D } 8. Nb3 Bb4+ 9. Bd2 Ne5 { D } 10. Qc2 d5 11. cxd5 Qa6 12. Bf1 Nf3+ 13.
+Kd1 Qb6 14. Bxb4 Qxb4 15. Be2 Ne5 16. Nc3 O-O 17. a3 Qd6 18. Kc1 exd5 19.
+Kb1 Be6 20. Nd4 Rfc8 21. Qb3 Neg4 { D } 22. Nd1 Ne4 23. Ka2 Ngxf2 24. Nxf2
+Nxf2 25. Rhf1 Ne4 26. Rad1 Nc5 27. Qc3 Qe5 28. Qd2 a5 29. Nxe6 fxe6 30. Bg4
+Rc6 31. Rc1 Ne4 32. Qd4 Qd6 33. Rcd1 Nf6 34. Bh3 e5 35. Qd2 a4 36. Bg2 e4
+37. Bh3 Rd8 38. Rf5 Rc4 39. Bf1 Rc5 40. Qd4 { D } 40... b6 41. Be2 Rc2 42.
+Rf2 Qc5 43. Qxa4 Ng4 44. Rxd5 Qxd5+ 0-1
+
+[Event "London league"]
+[Site "London ENG"]
 [Date "2015.11.25"]
 [Round "?"]
 [White "Casaschi, Paolo"]
