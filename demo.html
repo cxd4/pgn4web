@@ -3,7 +3,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009-2015 Paolo Casaschi
+  copyright (C) 2009-2016 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -143,7 +143,7 @@ pgn4web demo site
 
 <p></p>
 <center>
-<iframe id="pgnframe" name="pgnframe" style="height:0; width:0; border:none;">your browser does not support the required iframe functionality</iframe>
+<iframe id="pgnframe" name="pgnframe" style="height:0; width:0; border:none;" scrolling="no">your browser does not support the required iframe functionality</iframe>
 </center>
 
 <script type="text/javascript">
@@ -167,6 +167,7 @@ function select_frame(new_frame) {
     var new_frame_border = "none";
     var new_frame_borderRadius = "";
     var new_frame_boxShadow = "";
+    var new_frame_scrolling = "no";
 
     switch (new_frame) {
       case "euroteams":
@@ -174,6 +175,7 @@ function select_frame(new_frame) {
         new_frame_height = "550px";
         new_frame_border = "inset 2px #EFF4EC";
         new_frame_boxShadow = "0px 0px 2px 1px #C6CEC3";
+        new_frame_scrolling = "auto";
         break;
       case "huebner":
         new_frame_height = "622px";
@@ -243,6 +245,7 @@ function select_frame(new_frame) {
     document.getElementById("pgnframe").style.border = new_frame_border;
     document.getElementById("pgnframe").style.borderRadius = new_frame_borderRadius;
     document.getElementById("pgnframe").style.boxShadow = new_frame_boxShadow;
+    document.getElementById("pgnframe").scrolling = new_frame_scrolling;
 
     selected_object.className = "linkselected";
 
