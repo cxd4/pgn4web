@@ -1,3 +1,26 @@
+[Event "Middlesex league"]
+[Site "London ENG"]
+[Date "2016.02.09"]
+[Round "?"]
+[White "Todd, Chris"]
+[Black "Casaschi, Paolo"]
+[Result "0-1"]
+[ECO "B02"]
+[Opening "Alekhine's defence"]
+[Variation "Saemisch attack"]
+
+1. e4 Nf6 2. e5 Nd5 3. Nc3 Nb6 4. d4 d6 5. Bf4 g6 6. Nf3 Bg7 7. Be2 O-O 8.
+O-O Nc6 9. exd6 cxd6 10. Qd2 Re8 11. Rad1 Bg4 12. Be3 Rc8 13. h3 { D }
+13... Bf5 14. g4 Bd7 15. Bh6 Bh8 16. Ne4 Be6 17. b3 Bd5 18. Neg5 { D }
+18... f6 19. c4 Bxf3 20. Nxf3 Bg7 21. Bxg7 Kxg7 22. d5 Ne5 23. Nd4 Qd7 24.
+Ne6+ Kh8 25. f4 Nf7 26. Bd3 Rg8 27. Kh2 Qe8 28. Rde1 Nd8 29. Qb2 Nxe6 30.
+Rxe6 Rg7 31. Rfe1 { D } 31... Qf7 32. Rxe7 Qf8 33. R7e6 Nd7 34. b4 Kg8 35.
+h4 a6 36. Qe2 Rf7 37. Re7 Nb6 38. Qe6 Qxe7 39. Qxe7 Rxe7 40. Rxe7 Nxc4 41.
+Rxb7 Ne3 42. Be4 Nxg4+ 43. Kg3 f5 44. Bf3 Rc2 45. a4 { D } 45... Ne3 46.
+Kh3 Nf1 47. Bg2 Rc3+ 48. Bf3 Rxf3+ 49. Kg2 Rxf4 50. Rb6 Ne3+ 51. Kg3 Rg4+
+52. Kf3 Nxd5 53. Rxa6 Rxb4 54. a5 Ra4 55. h5 Kg7 56. hxg6 hxg6 57. Ra7+ Kf6
+58. Ra8 Ra3+ 59. Kf2 Nb4 60. Ra7 Kg5 61. Kg2 Kg4 62. Ra8 Ra2+ 0-1
+
 [Event "London league"]
 [Site "London ENG"]
 [Date "2016.01.27"]
