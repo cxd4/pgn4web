@@ -3,7 +3,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009-2015 Paolo Casaschi
+  copyright (C) 2009-2016 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -2269,7 +2269,7 @@ function stripPgnText() {
 
       strippedGame = pgnGame[ii];
       strippedGame = strippedGame.replace(/(^|\n)%[^\n]*(\n|$)/, "$1$2"); // remove lines starting %
-      strippedGame = strippedGame.replace(/\b\d+\.+/g, " "); // remove move numbers
+      strippedGame = strippedGame.replace(/\b\d+\s*\.+\s*(?=[a-hKQRBNO])/g, " "); // remove move numbers
       strippedGame = strippedGame.replace(/(\w)[+#](\W)/g, "$1$2"); // remove check and mate signs
       strippedGame = strippedGame.replace(/(\w)(x|:)([a-h][1-8])\b/g, "$1$3"); // remove capture signs
       strippedGame = strippedGame.replace(/([a-h][18])=([A-Z])/g, "$1$2"); // remove promotion sign
