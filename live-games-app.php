@@ -2,7 +2,7 @@
 
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2015 Paolo Casaschi
+ *  copyright (C) 2009-2016 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -79,7 +79,7 @@ END;
 <li>open the <a id="appLink" href="" target="_blank">app URL</a> on a new page of the browser</li>
 <li>bookmark the URL</li>
 <li>open the newly created bookmark and start the app from the browser</a>
-<li>optionally, if available from the browser, use a command like "add site to start menu", "add site to start screen", "add site to apps", "create application shortcuts", "add shortcut to home", "add to home screen" or similar in order to add the app icon to the start menu, to the desktop or to the home screen</li>
+<li>optionally, if available from the browser, use a command like "add site/shortcut to apps/desktop/home/menu/shelf/start/taskbar" or similar in order to add the app icon to the start menu, to the desktop or to the home screen</li>
 </ol>
 <script type="text/javascript">
 "use strict";

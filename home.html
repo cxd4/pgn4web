@@ -3,7 +3,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009-2015 Paolo Casaschi
+  copyright (C) 2009-2016 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -59,10 +59,10 @@ a:hover, a:active {
 }
 
 .menu_subitem {
-  display: inline-block;
+  display: none;
   font-size: 0.8em;
   margin-left: 1em;
-  margin-top: 0.4em;
+  margin-top: 0.5em;
   white-space: nowrap;
 }
 
@@ -150,7 +150,8 @@ iframe support required to display the chess puzzler
 <div class="menu_heading"><a href="http://pgn4web-project.casaschi.net/wiki/ServiceAvailability/">online&nbsp;services</a></div>
 <div class="menu_item"><a id="board_generator_link" title="online service adding an interactive chessboard to your website or your blog" href=".">board&nbsp;generator</a></div>
 <div class="menu_item"><a title="online service for viewing chess games from *.PGN files, from links to *.PGN URLs and from PGN text" href="viewer.php">games&nbsp;viewer</a></div>
-<div class="menu_item"><a id="live_link" title="online service broadcasting live games from current chess events" href="live.html" onclick="location.href = liveLinks[Math.floor(liveLinks.length * Math.random())]; return false;">live&nbsp;broadcast</a><br/><a id="live_analysis_link" class="menu_subitem" title="live broadcast analysis view" href=".">analysis&nbsp;view</a><br/><a id="live_fullscreen_link" class="menu_subitem" title="live broadcast fullscreen view" href=".">fullscreen&nbsp;view</a><br/><a id="live_mosaic_link" class="menu_subitem" title="live broadcast mosaic view with multiple chessboards" href=".">mosaic&nbsp;view</a><br/><a id="live_results_link" class="menu_subitem" title="live broadcast results view" href=".">results&nbsp;view</a></div>
+<div class="menu_item"><a id="live_link" title="online service broadcasting live games from current chess events" href="live.html" onclick="location.href = liveLinks[Math.floor(liveLinks.length * Math.random())]; return false;">live&nbsp;broadcast</a><a id="live_analysis_link" class="menu_subitem" title="live broadcast analysis view" href=".">analysis&nbsp;view</a><a id="live_fullscreen_link" class="menu_subitem" title="live broadcast fullscreen view" href=".">fullscreen&nbsp;view</a><a id="live_mosaic_link" class="menu_subitem" title="live broadcast mosaic view with multiple chessboards" href=".">mosaic&nbsp;view</a><a id="live_results_link" class="menu_subitem" title="live broadcast results view" href=".">results&nbsp;view</a><a id="live_games_web_app_link" class="menu_subitem" title="live games web app installation" href=".">web&nbsp;app</a></div>
+
 <div class="menu_heading"><a href="http://pgn4web-project.casaschi.net/">software</a></div>
 <div class="menu_item"><a href="demo.html">demo</a></div>
 <div class="menu_item"><a href="http://pgn4web-downloads.casaschi.net">downloads</a></div>
@@ -186,15 +187,27 @@ iframe support required to display the chess puzzler
 <script type="text/javascript">
 "use strict";
 
+function activate_menu_subitem(theObject, link, addToLiveLinks) {
+  theObj.href = link;
+  theObj.style.display = "block";
+  if (addToLiveLinks) { liveLinks.push(link); }
+}
+
 var theObj;
 
 if (theObj = document.getElementById("board_generator_link")) { theObj.href = pgn4web_generator_url; }
 
 var liveLinks = new Array();
-if (theObj = document.getElementById("live_analysis_link")) { liveLinks.push(theObj.href = "live.html?m=a"); }
-if (theObj = document.getElementById("live_fullscreen_link")) { liveLinks.push(theObj.href = pgn4web_live_pointer_url + "/live-fullscreen.html?scf=t"); }
-if (theObj = document.getElementById("live_mosaic_link")) { liveLinks.push(theObj.href = pgn4web_live_pointer_url + "/live-mosaic.html"); }
-if (theObj = document.getElementById("live_results_link")) { liveLinks.push(theObj.href = pgn4web_live_pointer_url + "/live-results.html"); }
+if (theObj = document.getElementById("live_analysis_link")) { activate_menu_subitem(theObj, "live.html?m=a", true); }
+if (theObj = document.getElementById("live_fullscreen_link")) { activate_menu_subitem(theObj, pgn4web_live_pointer_url + "/live-fullscreen.html?scf=t", true); }
+if (theObj = document.getElementById("live_mosaic_link")) { activate_menu_subitem(theObj, pgn4web_live_pointer_url + "/live-mosaic.html", true); }
+if (theObj = document.getElementById("live_results_link")) { activate_menu_subitem(theObj, pgn4web_live_pointer_url + "/live-results.html", true); }
+
+
+<!-- DeploymentCheck: live games web app -->
+
+<!-- end DeploymentCheck -->
+
 
 if (theObj = document.getElementById("email_link")) { theObj.href = "mailto:" + pgn4web_project_email; }
 
