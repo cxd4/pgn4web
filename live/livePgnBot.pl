@@ -1,6 +1,6 @@
 
 #  pgn4web javascript chessboard
-#  copyright (C) 2009-2015 Paolo Casaschi
+#  copyright (C) 2009-2016 Paolo Casaschi
 #  see README file and http://pgn4web.casaschi.net
 #  for credits, license and more details
 
@@ -14,6 +14,7 @@
 
 
 $| = 1;
+no if $] >= 5.018, warnings => "experimental::smartmatch";
 use strict;
 use Net::Telnet;
 use File::Copy;
@@ -1259,13 +1260,11 @@ sub refresh_memory {
         $memoryPgn .= $memory_games[$selected_memory_games[$i]];
       }
     }
-    if ($memoryPgn ne "") {
-      if (open(my $thisFile, ">", $PGN_MEMORY)) {
-        print $thisFile $memoryPgn;
-        close($thisFile);
-      } else {
-        log_terminal("error: failed writing $PGN_MEMORY");
-      }
+    if (open(my $thisFile, ">", $PGN_MEMORY)) {
+      print $thisFile $memoryPgn;
+      close($thisFile);
+    } else {
+      log_terminal("error: failed writing $PGN_MEMORY");
     }
   }
 }
