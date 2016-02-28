@@ -2,7 +2,7 @@
 
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2015 Paolo Casaschi
+ *  copyright (C) 2009-2016 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -261,7 +261,7 @@ if ($expiresDate) {
 }
 
 if ($rawGame) {
-  header("content-type: application/x-chess-pgn");
+  header("content-type: application/x-chess-pgn; charset=utf-8");
   header("content-disposition: inline; filename=puzzler.pgn");
   print $rawGame;
   exit;
