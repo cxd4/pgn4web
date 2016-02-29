@@ -18,6 +18,9 @@ $appName = 'Live Games';
 $appUserGuide = 'http://pgn4web-project.casaschi.net/wiki/App_LiveGames/';
 
 if (isset($_SERVER['REQUEST_URI']) && preg_match('/\?install(#|$)/', $_SERVER['REQUEST_URI'], $matches)) {
+  $installTextColor = 'white';
+  $installBackgroundColor = 'black';
+
   $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
   if(strstr($ua, 'android')) {
     $platform = 'Android';
@@ -35,15 +38,16 @@ if (isset($_SERVER['REQUEST_URI']) && preg_match('/\?install(#|$)/', $_SERVER['R
 <title>$appName</title>
 <style type="text/css">
 a { color: white; }
-body { color: white; background: black; font-family: sans-serif; padding: 2em; }
+body { color: $installTextColor; background: $installBackgroundColor; font-family: sans-serif; padding: 2em; }
 li { margin-bottom: 1em; }
-.icon { float: right; margin-left: 2em; border: solid 1px black; outline: solid 1px white; }
+.icon { float: right; margin-left: 2em; border: solid 1px $installBackgroundColor; outline: solid 1px $installTextColor; }
 </style>
 </head>
 <body>
 <a id="appIconLink" href="" target="_blank"><img id="appIcon" class="icon" src="live-games-app-icon-60x60.png" /></a>
 <h1>$appName</h1>
 App installation:
+
 END;
 
   if ($platform == 'Android') {
@@ -97,6 +101,7 @@ function installOpenWebApp() {
   } catch(e) { alert("error: app installation not supported"); }
 }
 </script>
+
 END;
   }
 
@@ -106,7 +111,6 @@ The <a href="$appUserGuide" target="_blank">app user guide</a> provides a detail
 "use strict";
 window.onload = function() {
   document.getElementById("appIconLink").href = document.getElementById("appLink").href = location.href.replace(/\?install(#|$)/, "$1");
-  document.getElementById("appIcon").style.opacity = 1;
 };
 document.addEventListener("contextmenu", function(e){ e.preventDefault(); }, false);
 </script>
@@ -125,6 +129,8 @@ $html = @file_get_contents("dynamic-frame.html");
 
 function errorExit($errorNum, $errorInfo) {
   global $appName;
+  $errorTextColor = 'white';
+  $errorBackgroundColor = 'black';
   $errorInfo = htmlentities(substr($errorInfo, 0, 40));
   $html = <<<END
 <!DOCTYPE HTML>
@@ -132,7 +138,7 @@ function errorExit($errorNum, $errorInfo) {
 <head>
 <title>$appName</title>
 </head>
-<body style="color: white; background: black; font-family: sans-serif;">
+<body style="color: $errorTextColor; background: $errorBackgroundColor; font-family: sans-serif;">
 $appName app error: $errorNum: $errorInfo
 </body>
 </html>
