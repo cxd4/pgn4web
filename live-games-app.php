@@ -37,7 +37,7 @@ if (isset($_SERVER['REQUEST_URI']) && preg_match('/\?install(#|$)/', $_SERVER['R
 a { color: white; }
 body { color: white; background: black; font-family: sans-serif; padding: 2em; }
 li { margin-bottom: 1em; }
-.icon { float: right; margin-left: 2em; border: none; border-radius: 10%; opacity: 0; transition: opacity 1s 2s; }
+.icon { float: right; margin-left: 2em; border: solid 1px black; outline: solid 1px white; }
 </style>
 </head>
 <body>
