@@ -20,7 +20,6 @@ $appUserGuide = 'http://pgn4web-project.casaschi.net/wiki/App_LiveGames/';
 if (isset($_SERVER['REQUEST_URI']) && preg_match('/\?install(#|$)/', $_SERVER['REQUEST_URI'], $matches)) {
   $installTextColor = 'white';
   $installBackgroundColor = 'black';
-
   $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
   if(strstr($ua, 'android')) {
     $platform = 'Android';
@@ -40,11 +39,11 @@ if (isset($_SERVER['REQUEST_URI']) && preg_match('/\?install(#|$)/', $_SERVER['R
 a { color: white; }
 body { color: $installTextColor; background: $installBackgroundColor; font-family: sans-serif; padding: 2em; }
 li { margin-bottom: 1em; }
-.icon { float: right; margin-left: 2em; border: solid 1px $installBackgroundColor; outline: solid 1px $installTextColor; }
+.icon { float: right; margin-left: 2em; }
 </style>
 </head>
 <body>
-<a id="appIconLink" href="" target="_blank"><img id="appIcon" class="icon" src="live-games-app-icon-60x60.png" /></a>
+<a id="appIconLink" href="" target="_blank"><img id="appIcon" class="icon" src="live-games-app-icon-60x60.png" title="$appName app icon" /></a>
 <h1>$appName</h1>
 App installation:
 
