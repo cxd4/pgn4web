@@ -83,7 +83,7 @@ END;
 <li>open the <a id="appLink" href="" target="_blank">app URL</a> on a new page of the browser</li>
 <li>bookmark the URL</li>
 <li>open the newly created bookmark and start the app from the browser</a>
-<li>optionally, if available from the browser, use a command like "add site/shortcut to apps/desktop/home/menu/shelf/start/taskbar" or similar in order to add the app icon to the start menu, to the desktop or to the home screen</li>
+<li>optionally, if available from the browser, use a command like "add app, site or shortcut to apps, desktop, home, menu, shelf, start or taskbar" in order to add the app icon to your system</li>
 </ol>
 <script type="text/javascript">
 "use strict";
