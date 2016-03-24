@@ -1,5 +1,21 @@
 [Event "Middlesex league"]
 [Site "London ENG"]
+[Date "2016.03.23"]
+[Round "?"]
+[White "Kay, Jonathan"]
+[Black "Casaschi, Paolo"]
+[Result "1/2-1/2"]
+[ECO "B32"]
+[Opening "Sicilian"]
+[Variation "Labourdonnais-Loewenthal variation"]
+
+1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 e5 5. Nb5 a6 6. Nd6+ Bxd6 7. Qxd6
+Qf6 { D } 8. Qd3 Nge7 9. c4 Nd4 10. Nc3 b5 11. cxb5 O-O 12. Be3 axb5 13.
+Bxd4 exd4 14. Nxb5 Ba6 15. Qxd4 Qg5 16. h4 Qf4 17. Nc3 Nf5 { D } 18. Qd5
+Bxf1 19. Qxf5 Qxf5 1/2-1/2
+
+[Event "Middlesex league"]
+[Site "London ENG"]
 [Date "2016.03.10"]
 [Round "?"]
 [White "Balloglu, Piro"]
