@@ -1,3 +1,23 @@
+[Event "London league"]
+[Site "London ENG"]
+[Date "2016.04.13"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Shepley, Julien"]
+[Result "1/2-1/2"]
+[ECO "D34"]
+[Opening "QGD"]
+[Variation "Tarrasch, Prague variation, 9.Bg5"]
+
+1. d4 d5 2. Nf3 c5 3. c4 e6 4. cxd5 exd5 5. g3 Nc6 6. Bg2 Nf6 7. O-O Be7 8.
+Nc3 O-O 9. Bg5 cxd4 10. Nxd4 h6 { D } 11. Bxf6 Bxf6 12. Nb3 d4 13. Nd5 { D
+} 13... Be6 14. Nxf6+ Qxf6 15. Rc1 Rfd8 16. Nc5 { D } 16... Bd5 17. Bxd5
+Rxd5 18. Qb3 Rdd8 { D } 19. Qxb7 Rab8 20. Qa6 Rb6 21. Qa4 Qe7 22. Rfe1 Ne5
+23. Nd3 Re6 24. Qc2 Re8 25. Qd2 Nxd3 26. Qxd3 Rxe2 27. Rxe2 Qxe2 28. Qxd4
+Rb8 { D } 29. Qd5 Qxb2 30. Rc7 Qf6 31. Rxa7 Rb2 32. Qa8+ Kh7 33. Qe4+ g6 {
+D } 34. Qf4 Qxf4 35. gxf4 Kg7 36. Kg2 Rb4 37. Kg3 Rb1 38. a4 Rg1+ 39. Kf3
+Rh1 40. Kg2 Ra1 1/2-1/2
+
 [Event "Middlesex league"]
 [Site "London ENG"]
 [Date "2016.03.23"]
