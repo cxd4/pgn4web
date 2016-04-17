@@ -20,7 +20,7 @@ use Net::Telnet;
 use File::Copy;
 use POSIX qw(strftime);
 use POSIX qw(tzset);
-use Safe;
+use Safe; # using Safe calls resets signal handlers
 
 our $FICS_HOST = "freechess.org";
 our $FICS_PORT = 5000;
@@ -554,6 +554,7 @@ sub eventround_autoprecorrect {
   if (($eventroundAutoprecorrectRegexp) && ($eventround =~ /$eventroundAutoprecorrectRegexp/i)) {
     $eventround =~ s/$eventroundAutoprecorrectRegexp/$safevalEventround->reval($eventroundAutoprecorrectString)/egi;
     if ($@) { log_terminal("warning: eventround autoprecorrect failed"); }
+    setup_signal_handlers();
     $eventround =~ s/\s+/ /g;
     $eventround =~ s/^\s|\s$//g;
     if ($eventround eq "") { $eventround = "?"; }
@@ -570,6 +571,7 @@ sub event_autocorrect {
   if (($eventAutocorrectRegexp) && ($event =~ /$eventAutocorrectRegexp/i)) {
     $event =~ s/$eventAutocorrectRegexp/$safevalEvent->reval($eventAutocorrectString)/egi;
     if ($@) { log_terminal("warning: event autocorrect failed"); }
+    setup_signal_handlers();
     $event =~ s/\s+/ /g;
     $event =~ s/^\s|\s$//g;
     if ($event eq "") { $event = "?"; }
@@ -587,6 +589,7 @@ sub round_autocorrect {
     ${$safevalRound->varglob("event")} = $event;
     $round =~ s/$roundAutocorrectRegexp/$safevalRound->reval($roundAutocorrectString)/egi;
     if ($@) { log_terminal("warning: round autocorrect failed"); }
+    setup_signal_handlers();
     $round =~ s/\s+/ /g;
     $round =~ s/^\s|\s$//g;
     if ($round eq "") { $round = "?"; }
@@ -1019,6 +1022,7 @@ sub Elo_eval_ignore {
       log_terminal("error: invalid eloignore=$EloIgnoreString");
       $retVal = 0;
     } elsif ($retVal != 1) { $retVal = 0; }
+    setup_signal_handlers();
     return $retVal;
   }
 }
@@ -1034,6 +1038,7 @@ sub Elo_eval_autoprioritize {
       log_terminal("error: invalid eloautoprioritize=$EloAutoprioritizeString");
       $retVal = 0;
     } elsif ($retVal != 1) { $retVal = 0; }
+    setup_signal_handlers();
     return $retVal;
   }
 }
@@ -1681,7 +1686,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "archiveselect") {
-    if ($parameters =~ /^([^\[\]]*)$/) {
+    if ($parameters =~ /^([^\/]*)$/) {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
@@ -1699,7 +1704,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "autoprioritize") {
-    if ($parameters =~ /^([^\[\]]*)$/) {
+    if ($parameters =~ /^([^\/]*)$/) {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
@@ -1854,6 +1859,7 @@ sub process_master_command {
           update_safevalElo(2000, 0);
           my $test = $safevalElo->reval($parameters);
           if ($@) { pgn4webError(); }
+          setup_signal_handlers();
           $EloAutoprioritizeString = $parameters;
         }
         if (($EloAutoprioritizeString ne $oldEloAutoprioritizeString) && ($relayMode == 1)) {
@@ -1870,6 +1876,7 @@ sub process_master_command {
     } or do {
       tell_operator("error: invalid regular expression: $parameters");
     };
+    setup_signal_handlers();
   } elsif ($command eq "eloignore") {
     eval {
       my $oldEloIgnoreString = $EloIgnoreString;
@@ -1880,6 +1887,7 @@ sub process_master_command {
           update_safevalElo(2000, 0);
           my $test = $safevalElo->reval($parameters);
           if ($@) { pgn4webError(); }
+          setup_signal_handlers();
           $EloIgnoreString = $parameters;
         }
         if (($EloIgnoreString ne $oldEloIgnoreString) && ($relayMode == 1)) {
@@ -1902,6 +1910,7 @@ sub process_master_command {
     } or do {
       tell_operator("error: invalid regular expression: $parameters");
     };
+    setup_signal_handlers();
   } elsif ($command eq "event") {
     if ($parameters =~ /^([^\[\]"]+|"")?$/) {
       if ($parameters ne "") {
@@ -1926,8 +1935,10 @@ sub process_master_command {
             my $newEventAutocorrectTest = "test";
             $newEventAutocorrectTest =~ s/$newEventAutocorrectRegexp/$safevalEvent->reval($newEventAutocorrectString)/egi;
             if ($@) { pgn4webError(); }
+            setup_signal_handlers();
             $newEventAutocorrectTest =~ s/$newEventAutocorrectTest/$safevalEvent->reval($newEventAutocorrectString)/egi;
             if ($@) { pgn4webError(); }
+            setup_signal_handlers();
             $eventAutocorrectRegexp = $newEventAutocorrectRegexp;
             $eventAutocorrectString = $newEventAutocorrectString;
           }
@@ -1941,6 +1952,7 @@ sub process_master_command {
       } or do {
         tell_operator("error: invalid regular expression: $parameters");
       };
+      setup_signal_handlers();
     } else {
       tell_operator("error: invalid $command parameter");
     }
@@ -1957,8 +1969,10 @@ sub process_master_command {
             my $newEventroundAutoprecorrectTest = "test";
             $newEventroundAutoprecorrectTest =~ s/$newEventroundAutoprecorrectRegexp/$safevalEventround->reval($newEventroundAutoprecorrectString)/egi;
             if ($@) { pgn4webError(); }
+            setup_signal_handlers();
             $newEventroundAutoprecorrectTest =~ s/$newEventroundAutoprecorrectTest/$safevalEventround->reval($newEventroundAutoprecorrectString)/egi;
             if ($@) { pgn4webError(); }
+            setup_signal_handlers();
             $eventroundAutoprecorrectRegexp = $newEventroundAutoprecorrectRegexp;
             $eventroundAutoprecorrectString = $newEventroundAutoprecorrectString;
           }
@@ -1972,6 +1986,7 @@ sub process_master_command {
       } or do {
         tell_operator("error: invalid regular expression: $parameters");
       };
+      setup_signal_handlers();
     } else {
       tell_operator("error: invalid $command parameter");
     }
@@ -2063,7 +2078,7 @@ sub process_master_command {
       tell_operator(detect_command_helptext($command));
     }
   } elsif ($command eq "ignore") {
-    if ($parameters =~ /^([^\[\]]*)$/) {
+    if ($parameters =~ /^([^\/]*)$/) {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
@@ -2453,7 +2468,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "memoryselect") {
-    if ($parameters =~ /^([^\[\]]*)$/) {
+    if ($parameters =~ /^([^\/]*)$/) {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
@@ -2525,7 +2540,7 @@ sub process_master_command {
       tell_operator("error: invalid $command parameter");
     }
   } elsif ($command eq "prioritize") {
-    if ($parameters =~ /^([^\[\]]*)$/) {
+    if ($parameters =~ /^([^\/]*)$/) {
       if ($parameters ne "") {
         eval {
           "test" =~ /$parameters/;
@@ -2639,8 +2654,10 @@ sub process_master_command {
             ${$safevalRound->varglob("event")} = "Test Event";
             $newRoundAutocorrectTest =~ s/$newRoundAutocorrectRegexp/$safevalRound->reval($newRoundAutocorrectString)/egi;
             if ($@) { pgn4webError(); }
+            setup_signal_handlers();
             $newRoundAutocorrectTest =~ s/$newRoundAutocorrectTest/$safevalRound->reval($newRoundAutocorrectString)/egi;
             if ($@) { pgn4webError(); }
+            setup_signal_handlers();
             $roundAutocorrectRegexp = $newRoundAutocorrectRegexp;
             $roundAutocorrectString = $newRoundAutocorrectString;
           }
@@ -2654,6 +2671,7 @@ sub process_master_command {
       } or do {
         tell_operator("error: invalid regular expression: $parameters");
       };
+      setup_signal_handlers();
     } else {
       tell_operator("error: invalid $command parameter");
     }
@@ -3131,11 +3149,14 @@ sub handleSigs {
   exit($exitVal);
 }
 
-$SIG{TERM}=\&handleSigs;
-$SIG{HUP}=\&handleSigs;
-$SIG{INT}=\&handleSigs;
-$SIG{USR1}=\&handleSigs;
-$SIG{USR2}=\&handleSigs;
+# for use at startup and after each call to Safe->reval()
+sub setup_signal_handlers {
+  $SIG{TERM}=\&handleSigs;
+  $SIG{HUP}=\&handleSigs;
+  $SIG{INT}=\&handleSigs;
+  $SIG{USR1}=\&handleSigs;
+  $SIG{USR2}=\&handleSigs;
+}
 
 sub myExit {
   my ($exitVal) = @_;                                      # 2 = memoryGamesCardinality + potentialPlaceholderGame
@@ -3150,6 +3171,7 @@ sub myExit {
 
 eval {
   setup_time();
+  setup_signal_handlers();
   log_terminal("alert: starting $0");
   if ($FLAGS) { log_terminal("alert: flags: $FLAGS"); }
   setup();
