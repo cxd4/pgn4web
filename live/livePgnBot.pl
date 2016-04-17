@@ -3119,35 +3119,23 @@ sub main_loop {
   }
 }
 
-sub handleTERM {
-  log_terminal("warning: received TERM signal");
-  myExit(0);
-}
-$SIG{TERM}=\&handleTERM;
 
-sub handleHUP {
-  log_terminal("warning: received HUP signal");
-  myExit(0);
+sub handleSigs {
+  my ($signalReceived) = @_;
+  my $exitVal = 0;
+  log_terminal("warning: received $signalReceived signal");
+  if ($signalReceived eq "INT") { $exitVal = 1; }
+  elsif ($signalReceived eq "USR1") { $exitVal = 2; }
+  elsif ($signalReceived eq "USR2") { $exitVal = 3; }
+  myExit($exitVal);
+  exit($exitVal);
 }
-$SIG{HUP}=\&handleHUP;
 
-sub handleINT {
-  log_terminal("warning: received INT signal");
-  myExit(1);
-}
-$SIG{INT}=\&handleINT;
-
-sub handleUSR1 {
-  log_terminal("warning: received USR1 signal");
-  myExit(2);
-}
-$SIG{USR1}=\&handleUSR1;
-
-sub handleUSR2 {
-  log_terminal("warning: received USR2 signal");
-  myExit(3);
-}
-$SIG{USR2}=\&handleUSR2;
+$SIG{TERM}=\&handleSigs;
+$SIG{HUP}=\&handleSigs;
+$SIG{INT}=\&handleSigs;
+$SIG{USR1}=\&handleSigs;
+$SIG{USR2}=\&handleSigs;
 
 sub myExit {
   my ($exitVal) = @_;                                      # 2 = memoryGamesCardinality + potentialPlaceholderGame
@@ -3158,6 +3146,7 @@ sub myExit {
   }
   exit($exitVal);
 }
+
 
 eval {
   setup_time();
