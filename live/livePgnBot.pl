@@ -882,6 +882,7 @@ sub fixEventRound {
   # $event =~ s/([a-z]+('s\b)?)/\u$1/ig; # capitalize words in event string, allowing for "Example's"
   $event =~ s/[\[\]"]/'/g;
   if ($eventroundAutoprecorrectRegexp) { $event = eventround_autoprecorrect($event); }
+  $_[2] = $event;
   fixRoundEvent($event, $round, "Game");
   fixRoundEvent($event, $round, "Matchup");
   fixRoundEvent($event, $round, "Round");
@@ -893,8 +894,8 @@ sub fixEventRound {
   $event =~ s/^(.*)$/\u$1/; # event first letter to uppercase
   if ($round eq "") { $round = "-"; }
   if ($roundAutocorrectRegexp) { $autorelayRound = round_autocorrect($round, $event); }
-  $_[0] = $event;
   $_[1] = $round;
+  $_[0] = $event;
 }
 
 sub fixRoundEvent {
@@ -1494,7 +1495,7 @@ sub memory_load {
 
 sub memory_load_check {
   if (($memory_load_time >= 0) && ($PGN_MEMORY ne "") && (time() - $memory_load_time > $MEMORY_LOAD_CHECK_FREQ)) {
-    if (($lastPgnNum == 0) && ($#memory_games + 1 > $memoryMaxGamesNum)) {
+    if (($lastPgnNum == 0) && (($#memory_games + 1 > $memoryMaxGamesNum) || (($#memory_games + 1 == $memoryMaxGamesNum) && ($placeholderGame ne "never")))) {
       if (refresh_pgn() == 0) { refresh_memory(); }
       log_terminal("debug: pgn refresh after load");
     }
@@ -1994,8 +1995,9 @@ sub process_master_command {
     if ($parameters ne "") {
       my $testEvent = $parameters;
       my $testRound = "";
-      fixEventRound($testEvent, $testRound);
-      tell_operator("eventroundcorrecttest=$parameters/$testEvent/$testRound");
+      my $testPrecorrect = "";
+      fixEventRound($testEvent, $testRound, $testPrecorrect);
+      tell_operator("eventroundcorrecttest=$parameters/$testPrecorrect/$testEvent/$testRound");
     } else {
       tell_operator(detect_command_helptext($command));
     }
