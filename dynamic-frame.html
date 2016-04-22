@@ -806,7 +806,7 @@ if ((window.parent !== window) && (!engineWinPrepareIdle)) {
 }
 
 function updateBareShortcut() {
-  boardShortcut("G5", bare ? "unhide game info\n\n" + gameTooltipInfo() : "maximize chessboard and hide game info", function(t,e){ toggleBareChessboard(); });
+  boardShortcut("G5", bare ? "unhide game info\n\n" + gameTooltipInfo() : "maximize chessboard and hide game info", function(t,e){ if (e.shiftKey) { alert(gameTooltipInfo()); } else { toggleBareChessboard(); } });
 }
 
 function meaningfulHeader(tagValue) {
