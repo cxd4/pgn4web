@@ -1,5 +1,23 @@
 [Event "London league"]
 [Site "London ENG"]
+[Date "2016.04.25"]
+[Round "?"]
+[White "Casaschi, Paolo"]
+[Black "Churm, Rohan"]
+[Result "0-1"]
+[ECO "D47"]
+[Opening "QGD semi-Slav"]
+[Variation "Meran, Wade variation"]
+
+1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. Nc3 e6 5. e3 Nbd7 6. Bd3 dxc4 7. Bxc4 b5 8.
+Bd3 Bb7 9. O-O a6 10. b3 c5 11. Bb2 Be7 12. Rc1 O-O 13. Qe2 Qb6 14. Rfd1
+Rac8 15. Bb1 Rc7 16. Qd2 Rfc8 17. dxc5 Bxc5 18. Nd4 e5 19. Nf5 g6 20. Nd6
+Bxd6 21. Qxd6 Qxd6 22. Rxd6 Be4 23. Rcd1 Bxb1 24. Nxb1 Rc2 25. Bxe5 Nxe5
+26. Rxf6 Rxa2 27. Rfd6 Rb2 28. f3 Rxb3 29. Rxa6 Nc4 30. e4 Ne3 31. Re1 Rc2
+32. Ra3 Rxg2+ 33. Kh1 { D } 33... Re2 34. Rc1 Rbb2 0-1
+
+[Event "London league"]
+[Site "London ENG"]
 [Date "2016.04.13"]
 [Round "?"]
 [White "Casaschi, Paolo"]
