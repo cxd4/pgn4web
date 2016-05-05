@@ -165,6 +165,7 @@ function select_frame(new_frame) {
     var new_frame_width = "100%";
     var new_frame_height = "1000px";
     var new_frame_border = "none";
+    var new_frame_padding = "";
     var new_frame_borderRadius = "";
     var new_frame_boxShadow = "";
     var new_frame_scrolling = "no";
@@ -207,13 +208,15 @@ function select_frame(new_frame) {
         if (Math.random() > 0.33) {
           new_frame_width = "800px";
           new_frame_height = "400px";
+          new_frame_padding = "5px";
+          new_frame_border = "solid 1px #596978";
         } else {
           new_frame_width = "328px";
           new_frame_height = "592px";
+          new_frame_border = "double 8px #80B0E0";
+          new_frame_borderRadius = "4px";
+          new_frame_boxShadow = "0px 0px 10px #80B0E0";
         }
-        new_frame_border = "double 8px #80B0E0";
-        new_frame_borderRadius = "4px";
-        new_frame_boxShadow = "0px 0px 10px #80B0E0";
         break;
       case "tallinn_live_mosaic":
         new_frame_width = "672px"; // ((256 + 40) * 2) + 40 * 2
@@ -242,6 +245,7 @@ function select_frame(new_frame) {
     }
     document.getElementById("pgnframe").style.width = new_frame_width;
     document.getElementById("pgnframe").style.height = new_frame_height;
+    document.getElementById("pgnframe").style.padding = new_frame_padding;
     document.getElementById("pgnframe").style.border = new_frame_border;
     document.getElementById("pgnframe").style.borderRadius = new_frame_borderRadius;
     document.getElementById("pgnframe").style.boxShadow = new_frame_boxShadow;
