@@ -124,6 +124,10 @@ Example:
 
   </script>
 
+Please note that HTML pages using the SetPgnUrl() option will fail
+when tested from a local disk: avoid testing from your local disk
+and use a web server instead.
+
 Then the script will automagically add content into your HTML file
 to any <div> or <span> containers with the following IDs:
 
