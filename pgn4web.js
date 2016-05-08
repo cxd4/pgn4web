@@ -1652,7 +1652,8 @@ function updatePgnFromHttpRequest(this_http_request, this_http_request_id) {
   if (this_http_request_id < http_request_last_processed_id) { return; }
   else { http_request_last_processed_id = this_http_request_id; }
 
-  if ((this_http_request.status == 200) || (this_http_request.status == 304) || (this_http_request.status === 0)) {
+  // bugfix: enable loading local PGN files on some browsers by adding: || (this_http_request.status === 0)
+  if ((this_http_request.status == 200) || (this_http_request.status == 304)) {
 
     if (this_http_request.status == 304) {
       if (LiveBroadcastDelay > 0) {
