@@ -470,7 +470,7 @@ from the http://ficsgames.org database, in turn likely based on code from the
 LT PGN viewer at http://www.lutanho.net/pgn/pgnviewer.html
 
 PNG images from http://ixian.com/chess/jin-piece-sets (creative commons
-attribution-share alike 3.0 unported license) by Eric De Mund.
+attribution 4.0 international license) by Eric De Mund.
 SVG images from http://commons.wikimedia.org/wiki/Category:SVG_chess_pieces
 by Colin M.L. Burnett; licensed under GFDL (www.gnu.org/copyleft/fdl.html),
 CC-BY-SA-3.0 (www.creativecommons.org/licenses/by-sa/3.0/) or
