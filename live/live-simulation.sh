@@ -1,5 +1,5 @@
 # pgn4web javascript chessboard
-# copyright (C) 2009-2013 Paolo Casaschi
+# copyright (C) 2009-2016 Paolo Casaschi
 # see README file and http://pgn4web.casaschi.net
 # for credits, license and more details
 
@@ -171,7 +171,7 @@ game2_header_live="$game2_header\n[Result \"*\"]"
 game2_header_end="$game2_header\n[Result \"1/2-1/2\"]"
 
 game2_moves[0]=""
-game2_clock[0]="[Clock \"W/1:59:5A\"]"
+game2_clock[0]="[Clock \"W/1:59:59\"]"
 
 game2_moves[1]="1.d4 {[%clk 1:59:59]} Nf6 {[%clk 1:59:58]} 2.c4 {[%clk 1:58:57]} c5 {[%clk 1:58:56]} 3.d5 {[%clk 1:57:55]}"
 game2_clock[1]="[Clock \"B/1:58:00\"]"
@@ -302,7 +302,7 @@ do
    echo > $pgn_file_tmp
 
    echo -e $game1_header_live >> $pgn_file_tmp
-        echo -e ${game1_clock[$upto]} >> $pgn_file_tmp
+   echo -e ${game1_clock[$upto]} >> $pgn_file_tmp
    echo >> $pgn_file_tmp
    move=0
    while [ $move -le $upto ]
@@ -310,11 +310,12 @@ do
       echo ${game1_moves[$move]} >> $pgn_file_tmp
       move=$(($move + 1))
    done
+   echo "*" >> $pgn_file_tmp
 
    echo >> $pgn_file_tmp
 
    echo -e $game2_header_live >> $pgn_file_tmp
-        echo -e ${game2_clock[$upto]} >> $pgn_file_tmp
+   echo -e ${game2_clock[$upto]} >> $pgn_file_tmp
    echo >> $pgn_file_tmp
    move=0
    while [ $move -le $upto ]
@@ -322,6 +323,7 @@ do
       echo ${game2_moves[$move]} >> $pgn_file_tmp
       move=$(($move + 1))
    done
+   echo "*" >> $pgn_file_tmp
 
    mv $pgn_file_tmp $pgn_file
    sleep $delay
