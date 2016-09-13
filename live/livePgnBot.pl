@@ -144,10 +144,10 @@ our @GAMES_site = ();
 our @GAMES_date = ();
 our @GAMES_round = ();
 our @GAMES_eco = ();
-our @GAMES_sortkey = ();
 our @GAMES_forgetTag = ();
 our @GAMES_timeLeft = ();
 our @GAMES_headerForFilter = ();
+our @GAMES_sortkey = ();
 
 our $newGame_num = -1;
 our $newGame_white;
@@ -206,11 +206,9 @@ our $placeholder_result = "*";
 our $placeholderPgnNum = "?";
 
 our $roundReverse = 0;
-our $roundReverseAgtB = $roundReverse ? -1 : 1;
-our $roundReverseAltB = -$roundReverseAgtB;
 
-our @currentRounds = ();
-our $currentRoundsJoined = "";
+our @currentEventRounds = ();
+our $currentEventRoundsJoined = "";
 
 our $PGN_MEMORY = "";
 our $memoryMaxGamesNum = $maxGamesNumDefault;
@@ -251,8 +249,9 @@ sub reset_live {
   @GAMES_timeLeft = ();
   @GAMES_headerForFilter = ();
   @GAMES_autorelayRunning = ();
-  @currentRounds = ();
-  $currentRoundsJoined = "";
+  @GAMES_sortkey = ();
+  @currentEventRounds = ();
+  $currentEventRoundsJoined = "";
   $reportedNotFoundNonPrioritizedGame = 0;
   $lastTopPgn = $lastPgnForce;
   log_terminal("debug: live games reset");
@@ -294,8 +293,6 @@ sub reset_config {
   $placeholder_result = "*";
   $placeholderPgnNum = "?";
   $roundReverse = 0;
-  $roundReverseAgtB = $roundReverse ? -1 : 1;
-  $roundReverseAltB = -$roundReverseAgtB;
   $ignoreFilter = "";
   $prioritizeFilter = "";
   $autoPrioritize = "";
@@ -335,17 +332,59 @@ sub find_gameIndex {
 
 sub eventRound {
   my ($thisEvent, $thisRound) = @_;
+  return '"' . $thisEvent . '" "' . $thisRound . '"';
+}
+
+sub sortkey {
+  my ($thisEvent, $thisRound, $thisWhiteElo, $thisBlackElo) = @_;
+  $thisEvent = lc($thisEvent);
+  $thisRound = lc($thisRound);
   $thisRound =~ s/\b(\d)\b/00$1/g;
   $thisRound =~ s/\b(\d\d)\b/0$1/g;
   $thisRound =~ s/(^|\.)(?=[^\dr]|$)/$1r/g;
-  return "\"$thisEvent\" \"$thisRound\"";
+  if ($roundReverse) { $thisRound = reverseString($thisRound); }
+  $thisWhiteElo =~ s/\D//g;
+  $thisBlackElo =~ s/\D//g;
+  my $thisElo = 10000 - $thisWhiteElo - $thisBlackElo;
+  return '"' . $thisEvent . '"' . $thisRound . '"' . $thisElo . '"';
 }
 
-# sprintf_eventRound is for output display only, since in some unexpected occurrences it might not reverse accurately eventRound
-sub sprintf_eventRound {
-  my ($thisEventRound) = @_;
-  $thisEventRound =~ s/([".])(0+(?=\d+[".])|r)/$1/g;
-  return $thisEventRound;
+sub reverseString {
+  my ($string) = @_;
+  my @chars = split("", $string);
+  my $o;
+  for (my $i=0; $i<=$#chars; $i++) {
+    $o = ord($chars[$i]);
+    if (($o >= 20) && ($o <= 254)) { $chars[$i] = chr(234 - $o); }
+  }
+  return join("", @chars);
+}
+
+sub sortkey_memory {
+  my ($i) = @_;
+  my $thisEvent;
+  my $thisRound;
+  my $thisWhiteElo;
+  my $thisBlackElo;
+  if ($memory_games[$i] =~ /\[Event "([^"]+)"\]/i) { $thisEvent = $1; } else { $thisEvent = ""; }
+  if ($memory_games[$i] =~ /\[Round "([^"]+)"\]/i) { $thisRound = $1; } else { $thisRound = ""; }
+  if ($memory_games[$i] =~ /\[WhiteElo "([^"]+)"\]/i) { $thisWhiteElo = $1; } else { $thisWhiteElo = ""; }
+  if ($memory_games[$i] =~ /\[BlackElo "([^"]+)"\]/i) { $thisBlackElo = $1; } else { $thisBlackElo = ""; }
+  return sortkey($thisEvent, $thisRound, $thisWhiteElo, $thisBlackElo);
+}
+
+sub update_sortkey_memory {
+  @memory_games_sortkey = ();
+  for (my $m=0; $m<=$#memory_games; $m++) {
+    $memory_games_sortkey[$m] = sortkey_memory($m);
+  }
+}
+
+sub update_sortkey_live {
+  @GAMES_sortkey = ();
+  for (my $i=0; $i<=$#games_num; $i++) {
+    $GAMES_sortkey[$games_num[$i]] = sortkey($GAMES_event[$games_num[$i]], $GAMES_round[$games_num[$i]], $games_whiteElo[$i], $games_blackElo[$i]);
+  }
 }
 
 sub cleanup_failed_save_game {
@@ -356,11 +395,11 @@ sub cleanup_failed_save_game {
     delete $GAMES_date[$gameNum];
     delete $GAMES_round[$gameNum];
     delete $GAMES_eco[$gameNum];
-    delete $GAMES_sortkey[$gameNum];
     delete $GAMES_forgetTag[$gameNum];
     delete $GAMES_timeLeft[$gameNum];
     delete $GAMES_headerForFilter[$gameNum];
     delete $GAMES_autorelayRunning[$gameNum];
+    delete $GAMES_sortkey[$gameNum];
   }
 }
 
@@ -414,9 +453,9 @@ sub save_game {
       $GAMES_date[$newGame_num] = strftime($newGame_date, o_gmtime());
       $GAMES_round[$newGame_num] = $newGame_round;
       $GAMES_eco[$newGame_num] = "";
-      $GAMES_sortkey[$newGame_num] = eventRound($newGame_event, $newGame_round);
-      $GAMES_forgetTag[$newGame_num] = sprintf("%012d%03d", o_time(), simpleStringCrc($GAMES_sortkey[$newGame_num]));
+      $GAMES_forgetTag[$newGame_num] = sprintf("%012d%03d", o_time(), simpleStringCrc(eventRound($newGame_event, $newGame_round)));
       $GAMES_headerForFilter[$newGame_num] = headerForFilter($newGame_event, $newGame_round, $newGame_white, $newGame_black);
+      $GAMES_sortkey[$newGame_num] = sortkey($newGame_event, $newGame_round, "", "");
     }
     $gamesStartCount++;
     log_terminal("debug: game new $newGame_num: $thisHeaderForFilter");
@@ -540,6 +579,7 @@ sub remove_game {
   delete $GAMES_forgetTag[$thisGameNum];
   delete $GAMES_timeLeft[$thisGameNum];
   delete $GAMES_headerForFilter[$thisGameNum];
+  delete $GAMES_sortkey[$thisGameNum];
   log_terminal("debug: game out $thisGameNum");
   refresh_pgn();
   if ($autorelayMode == 1) {
@@ -761,8 +801,7 @@ sub process_line {
         $GAMES_date[$thisGameNum] = strftime($newGame_date, o_gmtime());
         $GAMES_round[$thisGameNum] = $autorelayRound;
         $GAMES_eco[$thisGameNum] = $thisGameEco;
-        $GAMES_sortkey[$thisGameNum] = eventRound($autorelayEvent, $autorelayRound);
-        $GAMES_forgetTag[$thisGameNum] = sprintf("%012d%03d", o_time(), simpleStringCrc($GAMES_sortkey[$thisGameNum]));
+        $GAMES_forgetTag[$thisGameNum] = sprintf("%012d%03d", o_time(), simpleStringCrc(eventRound($autorelayEvent, $autorelayRound)));
         $GAMES_headerForFilter[$thisGameNum] = $thisHeaderForFilter;
         $GAMES_autorelayRunning[$thisGameNum] = 1;
         if (($autoPrioritize ne "") && ($thisHeaderForFilter =~ /$autoPrioritize/i)) {
@@ -784,7 +823,8 @@ sub process_line {
     my $thisBlackElo = $4;
     my $thisShortBlack = $5;
     if ($autorelayMode == 1) {
-      if ((defined $GAMES_event[$thisGameNum]) && (defined $GAMES_site[$thisGameNum]) && (defined $GAMES_date[$thisGameNum]) && (defined $GAMES_round[$thisGameNum]) && (defined $GAMES_eco[$thisGameNum]) && (defined $GAMES_sortkey[$thisGameNum]) && (defined $GAMES_forgetTag[$thisGameNum]) && (defined $GAMES_headerForFilter[$thisGameNum])) {
+      if ((defined $GAMES_event[$thisGameNum]) && (defined $GAMES_site[$thisGameNum]) && (defined $GAMES_date[$thisGameNum]) && (defined $GAMES_round[$thisGameNum]) && (defined $GAMES_eco[$thisGameNum]) && (defined $GAMES_forgetTag[$thisGameNum]) && (defined $GAMES_headerForFilter[$thisGameNum])) {
+        $GAMES_sortkey[$thisGameNum] = sortkey($GAMES_event[$thisGameNum], $GAMES_round[$thisGameNum], $thisWhiteElo, $thisBlackElo);
         if ($GAMES_headerForFilter[$thisGameNum] =~ /White\s+"$thisShortWhite.*Black\s+"$thisShortBlack/) {
           if (Elo_eval_ignore($thisWhiteElo, $thisBlackElo) == 0) {
             if (Elo_eval_autoprioritize($thisWhiteElo, $thisBlackElo) == 1) {
@@ -1130,16 +1170,8 @@ sub refresh_pgn {
       if ($aPrioritized && !$bPrioritized) { return -1; }
       if (!$aPrioritized && $bPrioritized) { return 1; }
     }
-    if (lc($GAMES_sortkey[$games_num[$a]]) gt lc($GAMES_sortkey[$games_num[$b]])) { return $roundReverseAgtB; }
-    if (lc($GAMES_sortkey[$games_num[$a]]) lt lc($GAMES_sortkey[$games_num[$b]])) { return $roundReverseAltB; }
-    # my $aElo = 0;
-    # if ($games_whiteElo[$a] =~ /^[0-9]+$/) { $aElo += $games_whiteElo[$a]; }
-    # if ($games_blackElo[$a] =~ /^[0-9]+$/) { $aElo += $games_blackElo[$a]; }
-    # my $bElo = 0;
-    # if ($games_whiteElo[$b] =~ /^[0-9]+$/) { $bElo += $games_whiteElo[$b]; }
-    # if ($games_blackElo[$b] =~ /^[0-9]+$/) { $bElo += $games_blackElo[$b]; }
-    # if ($aElo > $bElo) { return -1; }
-    # if ($aElo < $bElo) { return 1; }
+    if ($GAMES_sortkey[$games_num[$a]] lt $GAMES_sortkey[$games_num[$b]]) { return -1; }
+    if ($GAMES_sortkey[$games_num[$a]] gt $GAMES_sortkey[$games_num[$b]]) { return 1; }
     return $a <=> $b;
   } (0 .. ($maxGamesNum - 1));
 
@@ -1257,8 +1289,8 @@ sub refresh_memory {
       my @selected_memory_games = (0 .. ($memory_games_howmany - 1));
       if ($autorelayMode == 1) {
         @selected_memory_games = sort {
-          if (lc($memory_games_sortkey[$a]) gt lc($memory_games_sortkey[$b])) { return $roundReverseAgtB; }
-          if (lc($memory_games_sortkey[$a]) lt lc($memory_games_sortkey[$b])) { return $roundReverseAltB; }
+          if ($memory_games_sortkey[$a] lt $memory_games_sortkey[$b]) { return -1; }
+          if ($memory_games_sortkey[$a] gt $memory_games_sortkey[$b]) { return 1; }
           return $b <=> $a;
         } @selected_memory_games;
       }
@@ -1293,24 +1325,19 @@ sub memory_add_pgnGame {
   }
 }
 
-sub fixTagForPurge {
-  my ($thisTag) = @_;
-  $thisTag =~ s/[^\s\w\d]/./g;
-  return $thisTag;
-}
-
 sub memory_purge_event {
   my ($thisEvent) = @_;
   my $purgedEvent = 0;
 
   if ($PGN_MEMORY ne "") {
     my $logged = 0;
+    my $pattern = quotemeta('[Event "' . $thisEvent . '"]');
     for (my $i=$#memory_games; $i>=0; $i--) {
-      if ($memory_games_sortkey[$i] =~ /^"$thisEvent" ".*"$/) {
+      if ($memory_games[$i] =~ /$pattern/s) {
         @memory_games = @memory_games[0..($i-1), ($i+1)..$#memory_games];
         @memory_games_sortkey = @memory_games_sortkey[0..($i-1), ($i+1)..$#memory_games_sortkey];
         if ($logged == 0) {
-          log_terminal('debug: memory purged event: ' . $thisEvent);
+          log_terminal('debug: memory purged event: [Event "' . $thisEvent . '"]');
           $logged = 1;
         }
         $purgedEvent++;
@@ -1321,17 +1348,18 @@ sub memory_purge_event {
 }
 
 sub memory_purge_round {
-  my ($thisEventRound) = @_;
+  my ($thisEvent, $thisRound) = @_;
   my $purgedRound = 0;
 
   if ($PGN_MEMORY ne "") {
     my $logged = 0;
+    my $pattern = quotemeta('[Event "' . $thisEvent . '"]') . '.*' . quotemeta('[Round "' . $thisRound . '"]');
     for (my $i=$#memory_games; $i>=0; $i--) {
-      if ($thisEventRound eq $memory_games_sortkey[$i]) {
+      if ($memory_games[$i] =~ /$pattern/s) {
         @memory_games = @memory_games[0..($i-1), ($i+1)..$#memory_games];
         @memory_games_sortkey = @memory_games_sortkey[0..($i-1), ($i+1)..$#memory_games_sortkey];
         if ($logged == 0) {
-          log_terminal('debug: memory purged round: ' . sprintf_eventRound($thisEventRound));
+          log_terminal('debug: memory purged round: [Event "' . $thisEvent . '"][Round "' . $thisRound . '"]');
           $logged = 1;
         }
         $purgedRound++;
@@ -1356,11 +1384,9 @@ sub memory_purge_game {
       $thisWhite =~ s/(?<=.)([A-Z])/ $1/g;
       $thisBlack =~ s/(?<=.)([A-Z])/ $1/g;
     }
-    $thisWhite = fixTagForPurge($thisWhite);
-    $thisBlack = fixTagForPurge($thisBlack);
-    my $pattern = '\[White "' . $thisWhite . '"\].*\[Black "' . $thisBlack . '"\]';
+    my $pattern = quotemeta('[Event "' . $thisEvent . '"]') . '.*' . quotemeta('[Round "' . $thisRound . '"]') . '.*' . quotemeta('[White "' . $thisWhite . '"]') . '.*' . quotemeta('[Black "' . $thisBlack . '"]');
     for (my $i=$#memory_games; $i>=0; $i--) {
-      if ((eventRound($thisEvent, $thisRound) eq $memory_games_sortkey[$i]) && ($memory_games[$i] =~ /$pattern/s)) {
+      if ($memory_games[$i] =~ /$pattern/s) {
         @memory_games = @memory_games[0..($i-1), ($i+1)..$#memory_games];
         @memory_games_sortkey = @memory_games_sortkey[0..($i-1), ($i+1)..$#memory_games_sortkey];
         log_terminal('debug: memory purged game: [Event "' . $thisEvent . '"][Round "' . $thisRound . '"][White "' . $thisWhite . '"][Black "' . $thisBlack . '"]');
@@ -1376,16 +1402,12 @@ sub memory_replace_event {
   my $replacedEvent = 0;
 
   if ($PGN_MEMORY ne "") {
-    my $pattern = '\[Event "' . $searchEvent . '"\]';
+    my $pattern = quotemeta('[Event "' . $searchEvent . '"]');
     my $replacement = '[Event "' . $replacementEvent . '"]';
-    my $thisEvent;
-    my $thisRound;
     for (my $i=$#memory_games; $i>=0; $i--) {
       if ($memory_games[$i] =~ /$pattern/) {
         $memory_games[$i] =~ s/$pattern/$replacement/;
-        if ($memory_games[$i] =~ /\[Event "([^"]+)"\]/i) { $thisEvent = $1; } else { $thisEvent = ""; }
-        if ($memory_games[$i] =~ /\[Round "([^"]+)"\]/i) { $thisRound = $1; } else { $thisRound = ""; }
-        $memory_games_sortkey[$i] = eventRound($thisEvent, $thisRound);
+        $memory_games_sortkey[$i] = sortkey_memory($i);
         $replacedEvent++;
       }
     }
@@ -1394,13 +1416,33 @@ sub memory_replace_event {
   return $replacedEvent;
 }
 
+sub memory_replace_round {
+  my ($searchEvent, $searchRound, $replacementRound) = @_;
+  my $replacedRound = 0;
+
+  if ($PGN_MEMORY ne "") {
+    my $eventPattern = quotemeta('[Event "' . $searchEvent . '"]');
+    my $pattern = quotemeta('[Round "' . $searchRound . '"]');
+    my $replacement = '[Round "' . $replacementRound . '"]';
+    for (my $i=$#memory_games; $i>=0; $i--) {
+      if (($memory_games[$i] =~ /$eventPattern/) && ($memory_games[$i] =~ /$pattern/)) {
+        $memory_games[$i] =~ s/$pattern/$replacement/;
+        $memory_games_sortkey[$i] = sortkey_memory($i);
+        $replacedRound++;
+      }
+    }
+  }
+  if ($replacedRound > 0) { log_terminal('debug: replaced memory round: "' . $searchEvent . '" "' . $searchRound . '" "'. $replacementRound . '"'); }
+  return $replacedRound;
+}
+
 sub memory_replace_result {
   my ($searchEvent, $searchRound, $searchWhite, $searchBlack, $searchResult, $replacementResult) = @_;
   my $replacedResult = 0;
 
   if ($PGN_MEMORY ne "") {
-    my $gamePattern = '\[Event "' . $searchEvent . '"\].*\[Round "' . $searchRound . '"\].*\[White "' . $searchWhite . '"\].*\[Black "' . $searchBlack . '"\]';
-    my $pattern = '\[Result "' . $searchResult . '"\]';
+    my $gamePattern = quotemeta('[Event "' . $searchEvent . '"]') . '.*' . quotemeta('[Round "' . $searchRound . '"]') . '.*' . quotemeta('[White "' . $searchWhite . '"]') . '.*' . quotemeta('[Black "' . $searchBlack . '"]');
+    my $pattern = quotemeta('[Result "' . $searchResult . '"]');
     my $replacement = '[Result "' . $replacementResult . '"]';
     for (my $i=$#memory_games; $i>=0; $i--) {
       if (($memory_games[$i] =~ /$gamePattern/s) && ($memory_games[$i] =~ /$pattern/)) {
@@ -1413,30 +1455,6 @@ sub memory_replace_result {
   return $replacedResult;
 }
 
-sub memory_replace_round {
-  my ($searchEvent, $searchRound, $replacementRound) = @_;
-  my $replacedRound = 0;
-
-  if ($PGN_MEMORY ne "") {
-    my $eventPattern = '\[Event "' . $searchEvent . '"\]';
-    my $pattern = '\[Round "' . $searchRound . '"\]';
-    my $replacement = '[Round "' . $replacementRound . '"]';
-    my $thisEvent;
-    my $thisRound;
-    for (my $i=$#memory_games; $i>=0; $i--) {
-      if (($memory_games[$i] =~ /$eventPattern/) && ($memory_games[$i] =~ /$pattern/)) {
-        $memory_games[$i] =~ s/$pattern/$replacement/;
-        if ($memory_games[$i] =~ /\[Event "([^"]+)"\]/i) { $thisEvent = $1; } else { $thisEvent = ""; }
-        if ($memory_games[$i] =~ /\[Round "([^"]+)"\]/i) { $thisRound = $1; } else { $thisRound = ""; }
-        $memory_games_sortkey[$i] = eventRound($thisEvent, $thisRound);
-        $replacedRound++;
-      }
-    }
-  }
-  if ($replacedRound > 0) { log_terminal('debug: replaced memory round: "' . $searchEvent . '" "' . $searchRound . '" "'. $replacementRound . '"'); }
-  return $replacedRound;
-}
-
 our $memory_load_time = -1;
 
 sub memory_load {
@@ -1445,8 +1463,8 @@ sub memory_load {
   } else {
     my @candidate_memory_games = ();
     @memory_games = ();
-    @memory_games_sortkey = ();
     my $newEvent;
+    my $newRound;
     if (open(my $thisFile, "<", $PGN_MEMORY)) {
       my @lines = <$thisFile>;
       @candidate_memory_games = (join("", @lines) =~ /((?:\[\s*\w+\s*"[^"]*"\s*\]\s*)+(?:[^[]|\[%)+)/g);
@@ -1466,12 +1484,7 @@ sub memory_load {
       my $bForgetTag = ($b =~ /\[LivePgnBotM "([^"]+)"\]/i) ? $1 : "";
       return $bForgetTag cmp $aForgetTag;
     } @memory_games;
-    my $newRound;
-    foreach (@memory_games) {
-      if ($_ =~ /\[Event "([^"]+)"\]/i) { $newEvent = $1; } else { $newEvent = ""; }
-      if ($_ =~ /\[Round "([^"]+)"\]/i) { $newRound = $1; } else { $newRound = ""; }
-      push(@memory_games_sortkey, eventRound($newEvent, $newRound));
-    }
+    update_sortkey_memory();
     for (my $g=0; $g<=$#games_num; $g++) {
       memory_purge_game($GAMES_event[$games_num[$g]], $GAMES_round[$games_num[$g]], $games_white[$g], $games_black[$g]);
     }
@@ -1480,11 +1493,15 @@ sub memory_load {
       @memory_games_sortkey = @memory_games_sortkey[0..(int($memoryMaxGamesNumBuffer * $memoryMaxGamesNum) - 1)];
     }
     if ($autorelayMode == 1) {
-      my @newSortkey = ();
-      for (my $m=$#memory_games_sortkey; $m>=0; $m--) {
-        unless ($memory_games_sortkey[$m] ~~ @newSortkey) {
-          log_terminal("info: mem: " . sprintf_eventRound($memory_games_sortkey[$m]));
-          push(@newSortkey, $memory_games_sortkey[$m]);
+      my @newEventRound = ();
+      my $thisEventRound;
+      for (my $m=$#memory_games; $m>=0; $m--) {
+        if ($memory_games[$m] =~ /\[Event "([^"]+)"\]/i) { $newEvent = $1; } else { $newEvent = ""; }
+        if ($memory_games[$m] =~ /\[Round "([^"]+)"\]/i) { $newRound = $1; } else { $newRound = ""; }
+        $thisEventRound = eventRound($newEvent, $newRound);
+        unless ($thisEventRound ~~ @newEventRound) {
+          log_terminal("info: mem: " . $thisEventRound);
+          push(@newEventRound, $thisEventRound);
         }
       }
     }
@@ -1505,42 +1522,45 @@ sub memory_load_check {
 
 
 sub log_rounds {
-  my @newRounds = ();
-  my ($i, $thisRound, $thisEvent);
+  my @newEventRounds = ();
+  my ($i, $thisEvent, $thisRound, $thisEventRound);
 
   foreach (@games_num) {
     if (defined $GAMES_event[$_]) {
-      $thisRound = eventRound($GAMES_event[$_], $GAMES_round[$_]);
-      unless ($thisRound ~~ @newRounds) {
-        push(@newRounds, $thisRound);
+      $thisEvent = $GAMES_event[$_];
+      $thisRound = $GAMES_round[$_];
+      $thisEventRound = eventRound($thisEvent, $thisRound);
+      unless ($thisEventRound ~~ @newEventRounds) {
+        push(@newEventRounds, $thisEventRound);
       }
     }
   }
 
-  my $newRoundsJoined = join(":", @newRounds);
-  if ($newRoundsJoined ne $currentRoundsJoined) {
-    foreach (@currentRounds) {
-      unless ($_ ~~ @newRounds) {
-        log_terminal("info: out: " . sprintf_eventRound($_));
+  my $newEventRoundsJoined = join(":", @newEventRounds);
+  if ($newEventRoundsJoined ne $currentEventRoundsJoined) {
+    foreach (@currentEventRounds) {
+      unless ($_ ~~ @newEventRounds) {
+        log_terminal("info: out: " . $_);
       }
     }
-    foreach (@newRounds) {
-      unless ($_ ~~ @currentRounds) {
-        log_terminal("info: new: " . sprintf_eventRound($_));
+    foreach (@newEventRounds) {
+      unless ($_ ~~ @currentEventRounds) {
+        log_terminal("info: new: " . $_);
         $roundsStartCount++;
-        $thisEvent = $thisRound = $_;
-        $thisEvent =~ s/^"(.*)" ".*"$/$1/;
+        $thisEvent = $thisRound = $thisEventRound = $_;
+        $thisEvent =~ s/^"([^"]*)" "[^"]*"$/$1/;
+        $thisRound =~ s/^"[^"]*" "([^"]*)"$/$1/;
         if (($thisEvent ne "") && ($thisEvent ne "?") && ($thisEvent ne "-")) {
           if ($memoryAutopurgeEvent == 1) {
             memory_purge_event($thisEvent);
           } else {
-            memory_purge_round($thisRound);
+            memory_purge_round($thisEvent, $thisRound);
           }
         }
       }
     }
-    @currentRounds = @newRounds;
-    $currentRoundsJoined = $newRoundsJoined;
+    @currentEventRounds = @newEventRounds;
+    $currentEventRoundsJoined = $newEventRoundsJoined;
   }
 }
 
@@ -2039,7 +2059,7 @@ sub process_master_command {
         else { $gameList .= "*"; }
       }
     }
-    tell_operator("games:$memoryList placeholder($placeholderPgnNum) liverounds(" . ($#currentRounds + 1) . ") livegames(" . ($#games_num + 1) . "/$maxGamesNum)$gameList");
+    tell_operator("games:$memoryList placeholder($placeholderPgnNum) liverounds(" . ($#currentEventRounds + 1) . ") livegames(" . ($#games_num + 1) . "/$maxGamesNum)$gameList");
   } elsif ($command eq "heartbeat") {
     if (($parameters =~ /^(\d+(\.\d*)?)\s+(\d+(\.\d*)?)$/) && ($1 > 0) && ($3 < $1)) {
       $heartbeat_freq_hour = $1;
@@ -2373,7 +2393,7 @@ sub process_master_command {
     }
   } elsif ($command eq "memorypurgeround") {
     if ($parameters =~ /^\s*"([^"]*)"\s*"([^"]*)"\s*$/) {
-      if (memory_purge_round(eventRound($1, $2)) > 0) {
+      if (memory_purge_round($1, $2) > 0) {
         $lastPgn = $lastPgnForce;
         refresh_pgn();
         tell_operator("purged memory round");
@@ -2680,8 +2700,8 @@ sub process_master_command {
   } elsif ($command eq "roundreverse") {
     if ($parameters =~ /^(0|1)$/) {
       $roundReverse = $parameters;
-      $roundReverseAgtB = $roundReverse ? -1 : 1;
-      $roundReverseAltB = -$roundReverseAgtB;
+      update_sortkey_live();
+      update_sortkey_memory();
       # if ($#games_num > 0) { refresh_pgn(); }
     } elsif ($parameters !~ /^\??$/) {
       tell_operator("error: invalid $command parameter");
@@ -2972,7 +2992,7 @@ sub h_info {
   my $secTime = $nowTime - $startupTime;
   my $hourTime = $secTime / 3600;
   my $dayTime = $hourTime / 24;
-  my $thisInfo .= sprintf("rounds=%s/%s r/d=%s", num2str($#currentRounds + 1), num2str($roundsStartCount), num2str($roundsStartCount / $dayTime));
+  my $thisInfo .= sprintf("rounds=%s/%s r/d=%s", num2str($#currentEventRounds + 1), num2str($roundsStartCount), num2str($roundsStartCount / $dayTime));
   $thisInfo .= sprintf(" games=%s/%s/%s g/d=%s", num2str($#games_num + 1), num2str($maxGamesNum), num2str($gamesStartCount), num2str($gamesStartCount / $dayTime));
   if ($PGN_MEMORY ne "") {
     $thisInfo .= sprintf(" memory=%s/%s/%s", num2str($#memory_games + 1), num2str($memoryMaxGamesNum), num2str($memoryMaxGamesNumBuffer * $memoryMaxGamesNum));
