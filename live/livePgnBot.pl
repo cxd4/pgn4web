@@ -351,11 +351,14 @@ sub sortkey {
 
 sub reverseRoundString {
   my ($string) = @_;
+  my $cMin = 32; # space
+  my $cMax = 126; # last ascii before DEL
+  if ($string eq "") { return chr($cMax + 1); }
   my @chars = split("", $string);
   my $o;
   for (my $i=0; $i<=$#chars; $i++) {
     $o = ord($chars[$i]);
-    if (($o >= 32) && ($o <= 126)) { $chars[$i] = chr(158 - $o); }
+    if (($o >= $cMin) && ($o <= $cMax)) { $chars[$i] = chr($cMin + $cMax - $o); }
   }
   return join("", @chars);
 }
