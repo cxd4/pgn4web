@@ -355,7 +355,7 @@ sub reverseString {
   my $o;
   for (my $i=0; $i<=$#chars; $i++) {
     $o = ord($chars[$i]);
-    if (($o >= 20) && ($o <= 254)) { $chars[$i] = chr(234 - $o); }
+    if (($o >= 20) && ($o <= 254)) { $chars[$i] = chr(274 - $o); }
   }
   return join("", @chars);
 }
