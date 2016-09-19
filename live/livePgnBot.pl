@@ -342,20 +342,20 @@ sub sortkey {
   $thisRound =~ s/\b(\d)\b/00$1/g;
   $thisRound =~ s/\b(\d\d)\b/0$1/g;
   $thisRound =~ s/(^|\.)(?=[^\dr]|$)/$1r/g;
-  if ($roundReverse) { $thisRound = reverseString($thisRound); }
+  if ($roundReverse) { $thisRound = reverseRoundString($thisRound); }
   $thisWhiteElo =~ s/\D//g;
   $thisBlackElo =~ s/\D//g;
   my $thisElo = 10000 - $thisWhiteElo - $thisBlackElo;
   return '"' . $thisEvent . '"' . $thisRound . '"' . $thisElo . '"';
 }
 
-sub reverseString {
+sub reverseRoundString {
   my ($string) = @_;
   my @chars = split("", $string);
   my $o;
   for (my $i=0; $i<=$#chars; $i++) {
     $o = ord($chars[$i]);
-    if (($o >= 20) && ($o <= 254)) { $chars[$i] = chr(274 - $o); }
+    if (($o >= 32) && ($o <= 126)) { $chars[$i] = chr(158 - $o); }
   }
   return join("", @chars);
 }
