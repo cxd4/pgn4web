@@ -345,8 +345,9 @@ sub sortkey {
   if ($roundReverse) { $thisRound = reverseRoundString($thisRound); }
   $thisWhiteElo =~ s/\D//g;
   $thisBlackElo =~ s/\D//g;
-  my $thisElo = 10000 - $thisWhiteElo - $thisBlackElo;
-  return '"' . $thisEvent . '"' . $thisRound . '"' . $thisElo . '"';
+  my $thisAvgElo = 9999 - $thisWhiteElo - $thisBlackElo;
+  my $thisMaxElo = 9999 - ($thisWhiteElo > $thisBlackElo ? $thisWhiteElo : $thisBlackElo);
+  return '"' . $thisEvent . '"' . $thisRound . '"' . $thisAvgElo . '"' . $thisMaxElo . '"';
 }
 
 sub reverseRoundString {
