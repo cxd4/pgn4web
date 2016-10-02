@@ -475,10 +475,10 @@ sub save_game {
       }
     }
   }
-  refresh_pgn();
   if ($autorelayMode == 1) {
     log_rounds();
   }
+  refresh_pgn();
 }
 
 sub myAdd {
@@ -585,10 +585,10 @@ sub remove_game {
   delete $GAMES_headerForFilter[$thisGameNum];
   delete $GAMES_sortkey[$thisGameNum];
   log_terminal("debug: game out $thisGameNum");
-  refresh_pgn();
   if ($autorelayMode == 1) {
     log_rounds();
   }
+  refresh_pgn();
   return $thisGameIndex;
 }
 
@@ -1528,6 +1528,7 @@ sub memory_load_check {
 sub log_rounds {
   my @newEventRounds = ();
   my ($i, $thisEvent, $thisRound, $thisEventRound);
+  my $itemsRequiringRefresh = 0;
 
   foreach (@games_num) {
     if (defined $GAMES_event[$_]) {
@@ -1545,6 +1546,7 @@ sub log_rounds {
     foreach (@currentEventRounds) {
       unless ($_ ~~ @newEventRounds) {
         log_terminal("info: out: " . $_);
+        $itemsRequiringRefresh++;
       }
     }
     foreach (@newEventRounds) {
@@ -1556,9 +1558,9 @@ sub log_rounds {
         $thisRound =~ s/^"[^"]*" "([^"]*)"$/$1/;
         if (($thisEvent ne "") && ($thisEvent ne "?") && ($thisEvent ne "-")) {
           if ($memoryAutopurgeEvent == 1) {
-            memory_purge_event($thisEvent);
+            $itemsRequiringRefresh += memory_purge_event($thisEvent);
           } else {
-            memory_purge_round($thisEvent, $thisRound);
+            $itemsRequiringRefresh += memory_purge_round($thisEvent, $thisRound);
           }
         }
       }
@@ -1566,6 +1568,7 @@ sub log_rounds {
     @currentEventRounds = @newEventRounds;
     $currentEventRoundsJoined = $newEventRoundsJoined;
   }
+  return $itemsRequiringRefresh;
 }
 
 
@@ -2937,7 +2940,9 @@ sub check_relay_results {
         remove_game($thisGameNum);
       }
       @GAMES_autorelayRunning = ();
-      log_rounds();
+      if (log_rounds() > 0) {
+        refresh_pgn();
+      }
       if ($#games_num + 1 < $maxGamesNum) {
         $reportedNotFoundNonPrioritizedGame = 0;
       }
