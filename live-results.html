@@ -691,9 +691,9 @@ a.variation {
   }
 
   function printGames() {
+    firstTeam = "";
+    secondTeam = "";
     var firstRow = true;
-    var firstTeam = "";
-    var secondTeam = "";
     var lastEventRound = "";
     var lastMatchId = 0;
     var theObj = document.getElementById("results");
@@ -732,16 +732,20 @@ a.variation {
     }
   }
 
+  var firstTeam = "";
+  var secondTeam = "";
   function matchRow(eventStr, roundStr, matchId, firstRow) {
-    var firstTeam = "";
-    var secondTeam = "";
+    firstTeam = "";
+    secondTeam = "";
     if (matchId === 0) { return ""; }
     var firstTeamScore = 0;
     var secondTeamScore = 0;
     for (var ii in gameId) {
       if ((gameEvent[gameId[ii]] === eventStr) && (fixRound(gameRound[gameId[ii]]) === fixRound(roundStr)) && (gameMatchId[gameId[ii]] === matchId)) {
-        firstTeam = gameWhiteTeam[gameId[ii]];
-        secondTeam = gameBlackTeam[gameId[ii]];
+        if (!firstTeam || !secondTeam) {
+          firstTeam = gameWhiteTeam[gameId[ii]];
+          secondTeam = gameBlackTeam[gameId[ii]];
+        }
         switch (gameResult[gameId[ii]]) {
           case "1-0":
             if (firstTeam == gameWhiteTeam[gameId[ii]]) { firstTeamScore += 1; }
