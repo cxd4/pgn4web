@@ -572,7 +572,8 @@ a.variation {
   var gameBlackTitle;
   var gameWhiteElo;
   var gameBlackElo;
-  var gameMatch;
+  var gameMatchId;
+  var gameMatchKey;
   var gameBoard;
   var newGameLengthFromCrc = new Array();
   var gameLengthFromCrc = new Array();
@@ -589,7 +590,9 @@ a.variation {
     gameBlackTitle = new Array();
     gameWhiteElo = new Array();
     gameBlackElo = new Array();
-    gameMatch = new Array();
+    gameMatchId = new Array();
+    gameMatchKey = new Array();
+    gameMatchKey[0] = -1;
     gameBoard = new Array();
     gameNewMoves = new Array();
     var maxCrc = 1000000;
@@ -601,7 +604,8 @@ a.variation {
       gameBlackTitle[gg] = customPgnHeaderTag("BlackTitle", null, gg);
       gameWhiteElo[gg] = customPgnHeaderTag("WhiteElo", null, gg);
       gameBlackElo[gg] = customPgnHeaderTag("BlackElo", null, gg);
-      gameMatch[gg] = (gameWhiteTeam[gg] + gameBlackTeam[gg] !== "") ? ((crc32(gameWhiteTeam[gg]) + crc32(gameBlackTeam[gg])) % maxCrc) + maxCrc : 0;
+      gameMatchId[gg] = (gameWhiteTeam[gg] + gameBlackTeam[gg] !== "") ? ((crc32(gameWhiteTeam[gg]) + crc32(gameBlackTeam[gg])) % maxCrc) + maxCrc : 0;
+      if (typeof(gameMatchKey[gameMatchId[gg]]) == "undefined") { gameMatchKey[gameMatchId[gg]] = gg; }
       gameBoard[gg] = customPgnHeaderTag("Board", null, gg);
       var thisCrc = (typeof(pgnHeader[gg]) == "string") ? (crc32((gameEvent[gg] + "," + gameSite[gg] + "," + gameRound[gg] + "," + gameWhite[gg] + "," + gameBlack[gg] + ";").replace(/(^\s*|\s*$)/g, "")) % maxCrc) + maxCrc : 0;
       newGameLengthFromCrc[thisCrc] = LiveBroadcastDemo ? gameDemoMaxPly[gg] : pgnGame[gg].replace(/(^\s*|\s*$)/g, "").length;
@@ -666,7 +670,7 @@ a.variation {
     res = myCompareRound(fixRound(gameRound[aa]), fixRound(gameRound[zz]));
     if (res !== 0) { return roundReverse ? -res : res; }
 
-    res = myCompare(gameMatch[aa], gameMatch[zz]);
+    res = myCompare(gameMatchKey[gameMatchId[aa]], gameMatchKey[gameMatchId[zz]]);
     if (res !== 0) { return res; }
 
     res = myCompareRound(gameRound[aa], gameRound[zz]);
@@ -688,8 +692,10 @@ a.variation {
 
   function printGames() {
     var firstRow = true;
+    var firstTeam = "";
+    var secondTeam = "";
     var lastEventRound = "";
-    var lastMatch = 0;
+    var lastMatchId = 0;
     var theObj = document.getElementById("results");
     if (theObj) {
       var resultTable = "";
@@ -702,12 +708,12 @@ a.variation {
           resultTable += '<div class="eventRound"' + (firstRow ? ' style="margin-top:0px;"' : '') + '><span class="event" title="' + gameEvent[ggId] + '">' + gameEvent[ggId] + '</span><span class="round" title="' + 'round ' + fixedRound + '">' + fixedRound + '</span></div>';
           if (firstRow) { firstRow = false; }
           lastEventRound = currentEventRound;
-          lastMatch = 0;
+          lastMatchId = 0;
         }
-        if (showTeams && gameMatch[ggId] && (gameMatch[ggId] !== lastMatch)) {
-          resultTable += matchRow(gameEvent[ggId], gameRound[ggId], gameMatch[ggId], firstRow);
+        if (showTeams && gameMatchId[ggId] && (gameMatchId[ggId] !== lastMatchId)) {
+          resultTable += matchRow(gameEvent[ggId], gameRound[ggId], gameMatchId[ggId], firstRow);
           if (firstRow) { firstRow = false; }
-          lastMatch = gameMatch[ggId];
+          lastMatchId = gameMatchId[ggId];
         }
         whiteTitle = gameWhiteTitle[ggId];
         whiteElo = gameWhiteElo[ggId];
@@ -726,20 +732,16 @@ a.variation {
     }
   }
 
-  var firstTeam = "";
-  var secondTeam = "";
   function matchRow(eventStr, roundStr, matchId, firstRow) {
-    firstTeam = "";
-    secondTeam = "";
+    var firstTeam = "";
+    var secondTeam = "";
     if (matchId === 0) { return ""; }
     var firstTeamScore = 0;
     var secondTeamScore = 0;
     for (var ii in gameId) {
-      if ((gameEvent[gameId[ii]] === eventStr) && (fixRound(gameRound[gameId[ii]]) === fixRound(roundStr)) && (gameMatch[gameId[ii]] === matchId)) {
-        if (!firstTeam || !secondTeam) {
-          firstTeam = gameWhiteTeam[gameId[ii]];
-          secondTeam = gameBlackTeam[gameId[ii]];
-        }
+      if ((gameEvent[gameId[ii]] === eventStr) && (fixRound(gameRound[gameId[ii]]) === fixRound(roundStr)) && (gameMatchId[gameId[ii]] === matchId)) {
+        firstTeam = gameWhiteTeam[gameId[ii]];
+        secondTeam = gameBlackTeam[gameId[ii]];
         switch (gameResult[gameId[ii]]) {
           case "1-0":
             if (firstTeam == gameWhiteTeam[gameId[ii]]) { firstTeamScore += 1; }
