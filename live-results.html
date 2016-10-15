@@ -592,6 +592,7 @@ a.variation {
     gameMatch = new Array();
     gameBoard = new Array();
     gameNewMoves = new Array();
+    var maxCrc = 1000000;
     for (var gg = 0; gg < numberOfGames; gg++) {
       gameId[gg] = gg;
       gameWhiteTeam[gg] = customPgnHeaderTag("WhiteTeam", null, gg);
@@ -600,9 +601,9 @@ a.variation {
       gameBlackTitle[gg] = customPgnHeaderTag("BlackTitle", null, gg);
       gameWhiteElo[gg] = customPgnHeaderTag("WhiteElo", null, gg);
       gameBlackElo[gg] = customPgnHeaderTag("BlackElo", null, gg);
-      gameMatch[gg] = crc32(gameWhiteTeam[gg]) + crc32(gameBlackTeam[gg]);
+      gameMatch[gg] = (gameWhiteTeam[gg] + gameBlackTeam[gg] !== "") ? ((crc32(gameWhiteTeam[gg]) + crc32(gameBlackTeam[gg])) % maxCrc) + maxCrc : 0;
       gameBoard[gg] = customPgnHeaderTag("Board", null, gg);
-      var thisCrc = (typeof(pgnHeader[gg]) == "string") ? (crc32((gameEvent[gg] + "," + gameSite[gg] + "," + gameRound[gg] + "," + gameWhite[gg] + "," + gameBlack[gg] + ";").replace(/(^\s*|\s*$)/g, "")) % 65535) + 65535 : 0;
+      var thisCrc = (typeof(pgnHeader[gg]) == "string") ? (crc32((gameEvent[gg] + "," + gameSite[gg] + "," + gameRound[gg] + "," + gameWhite[gg] + "," + gameBlack[gg] + ";").replace(/(^\s*|\s*$)/g, "")) % maxCrc) + maxCrc : 0;
       newGameLengthFromCrc[thisCrc] = LiveBroadcastDemo ? gameDemoMaxPly[gg] : pgnGame[gg].replace(/(^\s*|\s*$)/g, "").length;
       gameNewMoves[gg] = ((newGameLengthFromCrc[thisCrc] !== gameLengthFromCrc[thisCrc]) && (LiveBroadcastStarted) && (LiveBroadcastTicker > 0) && (!LiveBroadcastEnded));
     }
@@ -627,7 +628,7 @@ a.variation {
   function myCompare(AA, ZZ) {
     if ((typeof(AA) == "undefined") && (typeof(ZZ) == "undefined")) { return 0; }
     if (typeof(ZZ) == "undefined") { return 1; }
-    if (typeof(ZZ) == "undefined") { return -1; }
+    if (typeof(AA) == "undefined") { return -1; }
     if (AA > ZZ) { return 1; }
     if (AA < ZZ) { return -1; }
     return 0;
