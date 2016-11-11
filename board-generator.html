@@ -131,7 +131,7 @@ function shorten_pgn4web_url() {
 // use this in shorten_pgn4web_url() to generate short urls with bitly
 // using bitly apis version 3, correct here if apis are changed
 function shorten_url_with_bitly(bitly_login, bitly_apiKey) {
-  var bitly_post_request = "http://api.bitly.com/v3/shorten";
+  var bitly_post_request = "https://api-ssl.bitly.com/v3/shorten";
   var bitly_params = "login=" + bitly_login + "&apiKey=" + bitly_apiKey + "&format=txt" + "&longUrl=" + encodeURIComponent(iframeUrl);
   var bitly_get_request = bitly_post_request + "?" + bitly_params;
 
@@ -139,7 +139,7 @@ function shorten_url_with_bitly(bitly_login, bitly_apiKey) {
   try {
     document.getElementById("shorturl_link_separator").innerHTML = "<b>:</b> ";
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", bitly_post_request);
+    xhr.open("GET", bitly_get_request); // xhr.open("POST", bitly_post_request); // select "GET" or "POST" option, see also below
     xhr.setRequestHeader("Content-type", "text/plain");
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4) {
@@ -163,7 +163,7 @@ function shorten_url_with_bitly(bitly_login, bitly_apiKey) {
         }
       }
     };
-    xhr.send(bitly_params);
+    xhr.send(); // xhr.send(bitly_params); // select "GET" or "POST" option, see also above
   } catch(e) {
     document.getElementById('bitly_form_login').value = bitly_login;
     document.getElementById('bitly_form_apiKey').value = bitly_apiKey;
