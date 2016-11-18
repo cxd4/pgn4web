@@ -11,7 +11,7 @@ set +o posix
 localPgnFile_default=live.pgn
 refreshSeconds_default=49
 timeoutHours_default=12
-
+startupDelaySeconds_default=0
 
 if [ "$1" == "--no-shell-check" ]
 then
@@ -28,7 +28,7 @@ fi
 if [ -z "$1" ] || [ "$1" == "--help" ]
 then
    echo
-   echo "$(basename $0) [--help] [--check] [remotePgnUrl localPgnFile refreshSeconds timeoutHours]"
+   echo "$(basename $0) [--help] [--check] [remotePgnUrl localPgnFile refreshSeconds timeoutHours startupDelaySeconds]"
    echo
    echo "Shell script periodically fetching from a remote URL a PGN file for a pgn4web live broadcast."
    echo
@@ -37,6 +37,7 @@ then
    echo "  localPgnFile: local PGN filename (default: $localPgnFile_default)"
    echo "  refreshSeconds: refresh rate in seconds (default: $refreshSeconds_default)"
    echo "  timeoutHours: timeout in hours for stopping the process (default: $timeoutHours_default)"
+   echo "  startupDelaySeconds: startup delay in seconds (default: $startupDelaySeconds_default)"
    echo
    echo "Logs to 'localPgnFile'.log; it needs to be run using bash and requires curl"
    echo
@@ -185,16 +186,41 @@ if [ -z "$3" ]
 then
    refreshSeconds=$refreshSeconds_default
 else
-   refreshSeconds=$3
+   if [[ "$3" =~ ^[0-9]+$ ]]
+   then
+      refreshSeconds=$3
+   else
+      print_error "refreshSeconds must be a number: $3"
+      exit
+   fi
 fi
 
 if [ -z "$4" ]
 then
    timeoutHours=$timeoutHours_default
 else
-   timeoutHours=$4
+   if [[ "$4" =~ ^[0-9]+$ ]]
+   then
+      timeoutHours=$4
+   else
+      print_error "timeoutHours must be a number: $4"
+      exit
+   fi
 fi
 timeoutSteps=$((3600*$timeoutHours/$refreshSeconds))
+
+if [ -z "$5" ]
+then
+   startupDelaySeconds=$startupDelaySeconds_default
+else
+   if [[ "$5" =~ ^[0-9]+$ ]]
+   then
+      startupDelaySeconds=$5
+   else
+      print_error "startupDelaySeconds must be a number: $5"
+      exit
+   fi
+fi
 
 if [ -z "$(which curl)" ]
 then
@@ -210,6 +236,13 @@ print_log "remoteUrl: $remotePgnUrl"
 print_log "localPgnFile: $localPgnFile"
 print_log "refreshSeconds: $refreshSeconds"
 print_log "timeoutHours: $timeoutHours"
+print_log "startupDelaySeconds: $startupDelaySeconds"
+
+if [ $startupDelaySeconds -gt 0 ]
+then
+   print_log "waiting $startupDelaySeconds at startup"
+   sleep $startupDelaySeconds
+fi
 
 step=0
 while [ $step -le $timeoutSteps ]
