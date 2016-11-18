@@ -30,13 +30,7 @@ fi
 ln -s "$(pwd)" ../"$pgn4webDirectory"
 
 cd ..
-zip -9r "$pgn4webFilename" "$pgn4webDirectory" -x *.svn/* -x "$pgn4webDirectory"/jsl.conf -x "$pgn4webDirectory"/live-games-app* -x "$pgn4webDirectory"/live/\* -x "$pgn4webDirectory"/live/ -x "$pgn4webDirectory"/paolo/\* -x "$pgn4webDirectory"/paolo/
-
-if [ "$1" == "full" ]; then
-  zip -9r "$pgn4webFilename" "$pgn4webDirectory"/live-games-app* "$pgn4webDirectory"/live/* -x *.svn/*
-else
-  zip -9r "$pgn4webFilename" "$pgn4webDirectory"/live/*.html "$pgn4webDirectory"/live/*.pgn "$pgn4webDirectory"/live/live-simulation.sh -x *.svn/*
-fi
+zip -9r "$pgn4webFilename" "$pgn4webDirectory" -x *.svn/*
 
 rm $pgn4webDirectory
 
