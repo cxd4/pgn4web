@@ -10,11 +10,7 @@ set +o posix
 
 pgn4webVer=$(grep "var pgn4web_version = " pgn4web.js | awk -F "'" '{print$2}')
 
-if [ "$1" == "full" ]; then
-  pgn4webFilename="pgn4web-full-$pgn4webVer.zip"
-else
-  pgn4webFilename="pgn4web-$pgn4webVer.zip"
-fi
+pgn4webFilename="pgn4web-$pgn4webVer.zip"
 
 if [ -e ../"$pgn4webFilename" ]; then
   echo "Error: pgn4web package already exists (../$pgn4webFilename)"
