@@ -1764,17 +1764,9 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 
 <!-- hidden elements for the short url generation -->
 
-<form id="tinyurl_form_shorturl" action="http://tinyurl.com/create.php" method="post" target="pgn4web_shorturl_window" style="display:inline;">
+<form id="tinyurl_form_shorturl" action="https://tinyurl.com/create.php" method="post" target="pgn4web_shorturl_window" style="display:inline;">
 <input id="tinyurl_form_shorturl_url" type="hidden" name="url">
 <input id="tinyurl_form_shorturl_alias" type="hidden" name="alias">
-</form>
-
-<!-- using bitly apis version 3, correct here if apis are changed -->
-<form id="bitly_form_shorturl" action="http://api.bitly.com/v3/shorten" method="post" target="pgn4web_shorturl_window" style="display:inline;">
-<input id="bitly_form_login" type="hidden" name="login">
-<input id="bitly_form_apiKey" type="hidden" name="apiKey">
-<input id="bitly_form_longUrl" type="hidden" name="longUrl">
-<input id="bitly_form_format" type="hidden" name="format">
 </form>
 
 <!-- end of hidden elements for the short url generation -->
