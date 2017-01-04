@@ -11,5 +11,5 @@
         "sizes": "128x128",
         "type": "image/png"
       }],
-  "pgn4web_notes": "copyright (C) 2009-2016 Paolo Casaschi; add to .htacess to serve *.json properly: 'AddType application/x-web-app-manifest+json .json'"
+  "pgn4web_notes": "copyright (C) 2009-2017 Paolo Casaschi; add to .htacess to serve *.json properly: 'AddType application/x-web-app-manifest+json .json'"
 }

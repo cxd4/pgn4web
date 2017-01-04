@@ -12,5 +12,5 @@
     "name": "pgn4web project",
     "url": "http://pgn4web.casaschi.net"
   },
-  "pgn4web_notes": "copyright (C) 2009-2016 Paolo Casaschi; add to .htacess to serve *.webapp properly: 'AddType application/x-web-app-manifest+json .webapp'"
+  "pgn4web_notes": "copyright (C) 2009-2017 Paolo Casaschi; add to .htacess to serve *.webapp properly: 'AddType application/x-web-app-manifest+json .webapp'"
 }

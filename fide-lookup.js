@@ -1,6 +1,6 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2016 Paolo Casaschi
+ *  copyright (C) 2009-2017 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -13,8 +13,9 @@
 "use strict";
 
 function openFidePlayerUrl(name, FideId) {
-  if (FideId) { window.open("http://ratings.fide.com/card.phtml?event=" + escape(FideId)); }
-  else if (name) { window.open("http://ratings.fide.com/search.phtml?search=" + escape(name)); }
+  var windowName = "pgn4web_FIDE_rating";
+  if (FideId) { window.open("http://ratings.fide.com/card.phtml?event=" + escape(FideId), windowName); }
+  else if (name) { window.open("http://ratings.fide.com/search.phtml?search=" + escape(name), windowName); }
 }
 
 function customShortcutKey_Shift_1() {
