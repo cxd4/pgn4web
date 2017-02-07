@@ -29,12 +29,6 @@ body {
   background-color: white;
 }
 
-a {
-  text-decoration: none;
-  color: black;
-  background-color: white;
-}
-
 </style>
 
 <link rel="icon" sizes="16x16" href="pawn.ico" />
@@ -43,34 +37,20 @@ a {
 
 <body>
 
-<h1 style="margin-top:0px; padding-top:0px; text-align:right;">
-<span style="float:left; color:black;">
-testing pgn4web integration
-</span>
-<a href="." onfocus="this.blur();" style="width:49px; height:29px; background:url(pawns.png) -47px -15px; vertical-align:baseline; display:inline-block;"></a>
-</h1>
+<script type="text/javascript">
+"use strict";
 
-<div style="height:1px;"></div>
+var testSites = new Array();
+testSites.push("http://pgn4web-test.casaschi.net/blogger/");
+testSites.push("http://pgn4web-test.casaschi.net/googlesites/");
+testSites.push("http://pgn4web-test.casaschi.net/joomla/");
+testSites.push("http://pgn4web-test.casaschi.net/phpbb/");
+testSites.push("http://pgn4web-test.casaschi.net/wordpress/");
 
-<p>
-Please find below a list of sites testing the integration of <a href=http://pgn4web.casaschi.net target=_blank>pgn4web</a> with popular web software platforms. <a href=http://pgn4web-project.casaschi.net/wiki/User_Notes_Web_Platforms/ target=_blank>Information on pgn4web integration with those platforms and many others is available at the pgn4web wiki</a>, together with <a href=http://pgn4web-project.casaschi.net/wiki/User_Notes/ target=_blank>detailed instructions for developers</a>. Keep in mind these are test sites, that might (and will) be occasionally broken.
-</p>
+location.href = testSites[Math.floor(testSites.length * Math.random())];
 
-<p>
-pgn4web integration test sites:
-<ul>
-  <li><a href="http://pgn4web-test.casaschi.net/blogger/">blogger blog</a></li>
-  <li><a href="http://pgn4web-test.casaschi.net/googlesites/">google sites hosting</a></li>
-  <li><a href="http://pgn4web-test.casaschi.net/joomla/">joomla portal</a></li>
-  <li><a href="http://pgn4web-test.casaschi.net/phpbb/">phpBB forum</a></li>
-  <li><a href="http://pgn4web-test.casaschi.net/wordpress/">wordpress blog</a></li>
-</ul>
-</p>
-
-<p>Please look at the <a href=http://pgn4web.casaschi.net/demo/ target=_blank>pgn4web demo site</a>
-for a generic overview of <a href=http://pgn4web.casaschi.net target=_blank>pgn4web</a>'s capabilities.</p>
+</script>
 
 </body>
 
 </html>
-
