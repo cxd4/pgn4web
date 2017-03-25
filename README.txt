@@ -463,6 +463,12 @@ site, the pgn4web.js code should support it.
 As of pgn4web version 2.71 strict mode is used, see statement: "use strict";
 
 
+KNOWN BUGS AND BUG FIXES
+
+Comments starting with "knownbug:" refer to known bugs currently in the pgn4web code.
+Commemts starting with "bugfix:" highlight workarounds coping with issues of specific browser versions.
+
+
 CREDITS AND LICENSE
 
 javascript modifications of Paolo Casaschi (pgn4web@casaschi.net) on code

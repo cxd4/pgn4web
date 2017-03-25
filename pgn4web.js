@@ -788,7 +788,7 @@ function CurrentFEN() {
   thisFEN += CurrentPly%2 ? " b" : " w";
 
   // castling availability: always in the KQkq form
-  // note: wrong FEN for Chess960 positions with inner castling rook
+  // knownbug: wrong FEN for Chess960 positions with inner castling rook
   var CastlingFEN = "";
   if (RookForOOCastling(0) !== null) { CastlingFEN += PiecesArr[0].toUpperCase(); }
   if (RookForOOOCastling(0) !== null) { CastlingFEN += PiecesArr[1].toUpperCase(); }
