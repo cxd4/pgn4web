@@ -1791,7 +1791,6 @@ function loadPgnCheckingLiveStatus(res) {
   if (LiveBroadcastDelay > 0) { restartLiveBroadcastTimeout(); }
 }
 
-var lastPgnUrl = "";
 var http_request_last_id = 0;
 function loadPgnFromPgnUrl(pgnUrl) {
 
@@ -1822,10 +1821,9 @@ function loadPgnFromPgnUrl(pgnUrl) {
     }
     http_request.open("GET", pgnUrl + randomizer);
     // anti-caching #2
-    if ((LiveBroadcastDelay > 0) && (pgnUrl === lastPgnUrl)) {
+    if (LiveBroadcastDelay > 0) {
       http_request.setRequestHeader( "If-Modified-Since", LiveBroadcastLastModifiedHeader );
     }
-    lastPgnUrl = pgnUrl;
     http_request.send(null);
   } catch(e) {
     myAlert('error: failed sending XMLHttpRequest for PGN URL\n' + pgnUrl, true);
