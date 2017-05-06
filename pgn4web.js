@@ -1059,13 +1059,14 @@ function CheckLegality(what, plyCount) {
   }
 
   // capture: "square to" occupied by opposite color piece (except en-passant)
-  // promotion: "square to" moved piece different from piece
   if (!mvCapture) {
     if (Board[mvToCol][mvToRow] !== 0) { return false; }
   }
   if ((mvCapture) && (Color(Board[mvToCol][mvToRow]) != 1-MoveColor)) {
     if ((mvPiece != 6) || (!HistEnPassant[plyCount]) || (HistEnPassantCol[plyCount] != mvToCol) || (mvToRow != 5-3*MoveColor)) { return false; }
   }
+
+  // promotion: "square to" moved piece different from piece
   if (mvIsPromotion) {
     if (mvPiece != 6) { return false; }
     if (mvPieceOnTo >= 6) { return false; }
@@ -1073,7 +1074,9 @@ function CheckLegality(what, plyCount) {
   }
 
   // piece move: which same type piece could move there?
-  for (var pieceId = 0; pieceId < 16; ++pieceId) {
+  var howManyCandidates = 0;
+  var candidatePieceId = -1;
+  for (var pieceId = 15; pieceId >= 0; --pieceId) {
     if (PieceType[MoveColor][pieceId] == mvPiece) {
       if (mvPiece == 1) { retVal = CheckLegalityKing(pieceId); }
       else if (mvPiece == 2) { retVal = CheckLegalityQueen(pieceId); }
@@ -1082,15 +1085,32 @@ function CheckLegality(what, plyCount) {
       else if (mvPiece == 5) { retVal = CheckLegalityKnight(pieceId); }
       else if (mvPiece == 6) { retVal = CheckLegalityPawn(pieceId); }
       if (retVal) {
+        // board updated: king in check?
         mvPieceId = pieceId;
-        // board updated: king check?
         StoreMove(plyCount);
-        if (!IsCheck(PieceCol[MoveColor][0], PieceRow[MoveColor][0], MoveColor)) { return true; }
-        else { UndoMove(plyCount); }
+        if (!IsCheck(PieceCol[MoveColor][0], PieceRow[MoveColor][0], MoveColor)) {
+          howManyCandidates++;
+          candidatePieceId = pieceId;
+        }
+        UndoMove(plyCount);
       }
     }
   }
+
+// patch: for rejecting rather than guessing ambiguous move replace the code till the end of this function with the following line
+// if (howManyCandidates == 1) { mvPieceId = candidatePieceId; StoreMove(plyCount); return true; } else { return false; }
+
+  if (howManyCandidates > 0) {
+    mvPieceId = candidatePieceId;
+    StoreMove(plyCount);
+    if (howManyCandidates > 1) {
+      var text = (Math.floor(plyCount / 2) + 1) + ((plyCount % 2) === 0 ? '. ' : '... ');
+      myAlert('error: guessed ambiguous ply ' + text + MovesVar[CurrentVar][plyCount] + ' in game ' + (currentGame+1) + ' variation ' + CurrentVar);
+    }
+    return true;
+  }
   return false;
+
 }
 
 function CheckLegalityKing(thisKing) {

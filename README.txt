@@ -398,14 +398,14 @@ http://pgn4web-project.casaschi.net/tickets/23/
 PGN STANDARD SUPPORT
 
 pgn4web mostly supports the PGN standard for chess games notation (see
-http://www.tim-mann.org/Standard). Notable exceptions and limitations:
+http://www.tim-mann.org/Standard).
 
-- variations are not parsed as such, but stored as comments; support for
-browsing variations is planned for a future release
-- if square brackets are present in the comments (or the game text) in a
-pattern similar to the PGN header pattern '[tag "value"]' then the game
-parsing might break. If your PGN file is not displayed properly, please
-check for characters "[" and "]" in the comments and try removing them.
+The general design principle is for pgn4web to try as much as possible
+to automatically recover from minor errors in the PGN data and only stop
+the game replay after unrecoverable errors.
+
+Notable exceptions and limitations with respect to the PGN standard:
+
 - only pieces initials in the English language are supported, the use of
 alternative languages as specified by the PGN standard is not supported
 (pgn4web can however display chess moves text using figurine notation, so
