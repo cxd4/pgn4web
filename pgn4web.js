@@ -2383,7 +2383,7 @@ function InitFEN(startingFEN) {
     StartPly += 2*(fullMoveNumber-1);
 
     if (IsCheck(PieceCol[MoveColor ? 0 : 1][0], PieceRow[MoveColor ? 0 : 1][0], MoveColor ? 0 : 1)) {
-      myAlertFEN(FenString, "side to move checking opponent's King");
+      myAlertFEN(FenString, (MoveColor ? "Black" : "White") + " to move checking " + (MoveColor ? "white" : "black") + " King");
     }
 
     HistEnPassant[StartPly] = newEnPassant;
