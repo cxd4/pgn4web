@@ -2168,7 +2168,7 @@ function InitFEN(startingFEN) {
     while (cc != " ") {
       if (cc == "/") {
         if (ii != 8) {
-          myAlertFEN(FenString, "char " + ll);
+          myAlertFEN(FenString, "piece placement: each row needs 8 squares");
           InitFEN();
           return;
         }
@@ -2176,21 +2176,21 @@ function InitFEN(startingFEN) {
         jj--;
       }
       if (ii == 8) {
-        myAlertFEN(FenString, "char " + ll);
+        myAlertFEN(FenString, "piece placement: each row needs 8 squares");
         InitFEN();
         return;
       }
       if (!isNaN(cc)) {
         ii += parseInt(cc,10);
         if ((ii < 0) || (ii > 8)) {
-          myAlertFEN(FenString, "char " + ll);
+          myAlertFEN(FenString, "piece placement: each row needs 8 squares");
           InitFEN();
           return;
         }
       }
       if (cc === PiecesArr[0].toUpperCase()) {
         if (PieceType[0][0] != -1) {
-          myAlertFEN(FenString, "char " + ll);
+          myAlertFEN(FenString, "piece placement: more than 1 white King");
           InitFEN();
           return;
         }
@@ -2200,7 +2200,7 @@ function InitFEN(startingFEN) {
         ii++;
       } else if (cc === PiecesArr[0].toLowerCase()) {
         if (PieceType[1][0] != -1) {
-          myAlertFEN(FenString, "char " + ll);
+          myAlertFEN(FenString, "piece placement: more than 1 black King");
           InitFEN();
           return;
         }
@@ -2212,7 +2212,7 @@ function InitFEN(startingFEN) {
       for (kk = 1; kk < 6; kk++) {
         if (cc === PiecesArr[kk].toUpperCase()) {
           if (nn == 16) {
-            myAlertFEN(FenString, "char " + ll);
+            myAlertFEN(FenString, "piece placement: more than 16 white pieces");
             InitFEN();
             return;
           }
@@ -2223,7 +2223,7 @@ function InitFEN(startingFEN) {
           ii++;
         } else if (cc === PiecesArr[kk].toLowerCase()) {
           if (mm==16) {
-            myAlertFEN(FenString, "char " + ll);
+            myAlertFEN(FenString, "piece placement: more than 16 black pieces");
             InitFEN();
             return;
           }
@@ -2237,7 +2237,7 @@ function InitFEN(startingFEN) {
       cc = ll < FenString.length ? FenString.charAt(ll++) : " ";
     }
     if ((ii != 8) || (jj !== 0)) {
-      myAlertFEN(FenString, "char " + ll);
+      myAlertFEN(FenString, "piece placement: string termination issue");
       InitFEN();
       return;
     }
@@ -2383,7 +2383,7 @@ function InitFEN(startingFEN) {
     StartPly += 2*(fullMoveNumber-1);
 
     if (IsCheck(PieceCol[MoveColor ? 0 : 1][0], PieceRow[MoveColor ? 0 : 1][0], MoveColor ? 0 : 1)) {
-      myAlertFEN(FenString, "side to move checking");
+      myAlertFEN(FenString, "side to move checking opponent's King");
     }
 
     HistEnPassant[StartPly] = newEnPassant;
