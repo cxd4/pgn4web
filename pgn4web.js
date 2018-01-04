@@ -1,6 +1,6 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2017 Paolo Casaschi
+ *  copyright (C) 2009-2018 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -2247,7 +2247,8 @@ function InitFEN(startingFEN) {
       return;
     }
     if (ll == FenString.length) {
-      FenString += "w " + assumedCastleRights() + " - 0 1";
+      FenString += " w " + assumedCastleRights() + " - 0 1";
+      ll++;
     }
     cc = FenString.charAt(ll++);
     if ((cc == "w") || (cc == "b")) {
@@ -2380,6 +2381,10 @@ function InitFEN(startingFEN) {
       fullMoveNumber = 1;
     }
     StartPly += 2*(fullMoveNumber-1);
+
+    if (IsCheck(PieceCol[MoveColor ? 0 : 1][0], PieceRow[MoveColor ? 0 : 1][0], MoveColor ? 0 : 1)) {
+      myAlertFEN(FenString, "side to move checking");
+    }
 
     HistEnPassant[StartPly] = newEnPassant;
     HistEnPassantCol[StartPly] = newEnPassantCol;

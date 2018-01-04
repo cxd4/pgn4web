@@ -2,7 +2,7 @@
 
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2015 Paolo Casaschi
+ *  copyright (C) 2009-2018 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -553,8 +553,8 @@ END;
 
     if (analysisStarted) { stopAnalysis(); }
     firstStart = true;
-    start_pgn4web();
     resetAlert();
+    start_pgn4web();
     myAlert("info: games from textbox input", false, true);
 
     goToHash("board");
@@ -608,8 +608,9 @@ function reset_viewer() {
     firstStart = true;
     SetAutoplayNextGame(false);
     if (IsRotated) { FlipBoard(); }
-    start_pgn4web();
     resetAlert();
+    gameLoadStatus = "info: no games supplied";
+    start_pgn4web();
     resetLastCommentArea();
   }
 
@@ -1220,10 +1221,13 @@ $pgnText
       stopAnnotateGame(false);
    }
 
+   var gameLoadStatus = "$pgnStatus";
    function customFunctionOnPgnTextLoad() {
       var theObj;
-      var gameLoadStatus = "$pgnStatus";
-      if (gameLoadStatus) {  myAlert(gameLoadStatus, gameLoadStatus.match(/^error:/), !gameLoadStatus.match(/^error:/)); }
+      if (gameLoadStatus) {
+          myAlert(gameLoadStatus, gameLoadStatus.match(/^error:/), !gameLoadStatus.match(/^error:/));
+          gameLoadStatus = "";
+      }
       if (theObj = document.getElementById("GameNumInfo")) {
          theObj.style.display = numberOfGames > 1 ? "block" : "none";
       }
