@@ -1598,7 +1598,7 @@ function fixCommonPgnMistakes(text) {
   text = text.replace(/[\u2010-\u2015]/g,"-"); // "hyphens" to "-"
   text = text.replace(/\u2024/g,"."); // "one dot leader" to "."
   text = text.replace(/[\u2025-\u2026]/g,"..."); // "two dot leader" and "ellipsis" to "..."
-  text = text.replace(/\\"/g,"'"); // fix [Opening "Queen\"s Gambit"]
+  text = text.replace(/\\"/g,"'"); // fix [Opening "Queen\"s gambit"]
   return text;
 }
 
@@ -2190,7 +2190,7 @@ function InitFEN(startingFEN) {
       }
       if (cc === PiecesArr[0].toUpperCase()) {
         if (PieceType[0][0] != -1) {
-          myAlertFEN(FenString, "piece placement: more than 1 white King");
+          myAlertFEN(FenString, "piece placement: more than 1 white king");
           InitFEN();
           return;
         }
@@ -2200,7 +2200,7 @@ function InitFEN(startingFEN) {
         ii++;
       } else if (cc === PiecesArr[0].toLowerCase()) {
         if (PieceType[1][0] != -1) {
-          myAlertFEN(FenString, "piece placement: more than 1 black King");
+          myAlertFEN(FenString, "piece placement: more than 1 black king");
           InitFEN();
           return;
         }
@@ -2242,7 +2242,7 @@ function InitFEN(startingFEN) {
       return;
     }
     if ((PieceType[0][0] == -1) || (PieceType[1][0] == -1)) {
-      myAlertFEN(FenString, "missing King");
+      myAlertFEN(FenString, "missing king");
       InitFEN();
       return;
     }
@@ -2286,7 +2286,7 @@ function InitFEN(startingFEN) {
           if (Board[CastlingShort[0]][0] == 3) { break; }
         }
         if (CastlingShort[0] <= PieceCol[0][0]) {
-          myAlertFEN(FenString, "missing castling Rook " + cc);
+          myAlertFEN(FenString, "missing castling rook " + cc);
           CastlingShort[0] = -1;
         }
       } else if (cc === PiecesArr[1].toUpperCase()) {
@@ -2294,7 +2294,7 @@ function InitFEN(startingFEN) {
           if (Board[CastlingLong[0]][0] == 3) { break; }
         }
         if (CastlingLong[0] >= PieceCol[0][0]) {
-          myAlertFEN(FenString, "missing castling Rook " + cc);
+          myAlertFEN(FenString, "missing castling rook " + cc);
           CastlingLong[0] = -1;
         }
       } else if (cc === PiecesArr[0].toLowerCase()) {
@@ -2302,7 +2302,7 @@ function InitFEN(startingFEN) {
           if (Board[CastlingShort[1]][7] == -3) { break; }
         }
         if (CastlingShort[1] <= PieceCol[1][0]) {
-          myAlertFEN(FenString, "missing castling Rook " + cc);
+          myAlertFEN(FenString, "missing castling rook " + cc);
           CastlingShort[1] = -1;
         }
       } else if (cc === PiecesArr[1].toLowerCase()) {
@@ -2310,7 +2310,7 @@ function InitFEN(startingFEN) {
           if (Board[CastlingLong[1]][7] == -3) { break; }
         }
         if (CastlingLong[1] >= PieceCol[1][0]) {
-          myAlertFEN(FenString, "missing castling Rook " + cc);
+          myAlertFEN(FenString, "missing castling rook " + cc);
           CastlingLong[1] = -1;
         }
       }
@@ -2325,7 +2325,7 @@ function InitFEN(startingFEN) {
           if (castlingRookCol > PieceCol[color][0]) { CastlingShort[color] = castlingRookCol; }
           if (castlingRookCol < PieceCol[color][0]) { CastlingLong[color] = castlingRookCol; }
         } else {
-          myAlertFEN(FenString, "missing castling Rook " + cc);
+          myAlertFEN(FenString, "missing castling rook " + cc);
         }
       }
       cc = ll<FenString.length ? FenString.charAt(ll++) : " ";
@@ -2383,7 +2383,7 @@ function InitFEN(startingFEN) {
     StartPly += 2*(fullMoveNumber-1);
 
     if (IsCheck(PieceCol[MoveColor ? 0 : 1][0], PieceRow[MoveColor ? 0 : 1][0], MoveColor ? 0 : 1)) {
-      myAlertFEN(FenString, (MoveColor ? "Black" : "White") + " to move checking " + (MoveColor ? "white" : "black") + " King");
+      myAlertFEN(FenString, (MoveColor ? "Black" : "White") + " to move checking " + (MoveColor ? "white" : "black") + " king");
     }
 
     HistEnPassant[StartPly] = newEnPassant;
@@ -2393,7 +2393,7 @@ function InitFEN(startingFEN) {
   }
 }
 
-// castling rights assuming Kings and Rooks starting positions as in normal chess
+// castling rights assuming kings and rooks starting positions as in normal chess
 function assumedCastleRights() {
   var ii, rights = "";
   if ((PieceRow[0][0] === 0) && (PieceCol[0][0] === 4)) {
