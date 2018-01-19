@@ -7,8 +7,8 @@ some garbage at the start of the PGN file
 [Site "Some site"]
 [Date "1234.56.78"]
 [Round "1"]
-[White "Some White player"]
-[Black "Some Black player"]
+[White "Some player"]
+[Black "Someone else"]
 [Result "1/2-1/2"]
 [WhiteTitle "IM"]
 [BlackTitle "FM"]
@@ -44,8 +44,8 @@ Nxd6 { [%clk 00:48:12] } 7. Bd3 { [%clk 00:47:13] } 7... Nc6 { [%clk
 [Site "Another site"]
 [Date "2345.67.89"]
 [Round "2"]
-[White "Another White player"]
-[Black "Another Black player"]
+[White "Some player"]
+[Black "Someone else"]
 [Result "*"]
 [SetUp "1"]
 [FEN "rnbqkb1r/pppppppp/5n2/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 1 2"]
@@ -109,7 +109,7 @@ variation}) *
 [Event "Testing header patterns in comments"]
 [Round "10"]
 
-1. e4 e6 { [White "Another White player"] [Black "Another Black player"] }
+1. e4 e6 { [White "Some player"] [Black "Someone else"] }
 d4 d5 *
 
 [Event"Testing very odd game"][Round "11"]a4(b4$6)a6!?{comment}a5*[Event"Testing another very odd game"][Round "12"]h4(g4)h6{comment}h5*
