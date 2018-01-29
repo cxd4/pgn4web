@@ -487,21 +487,22 @@ the Public Domain (http://creativecommons.org/publicdomain/zero/1.0/) as any
 openclipart.org content.
 
 The figurine fonts are derived from the Liberation Sans font (released under
-GNU General Public License, see https://fedorahosted.org/liberation-fonts/)
+GNU General Public License, see https://pagure.io/liberation-fonts/)
 with the addition of chess pieces from freeware fonts: the alpha2 font (Peter
 Strickland), the good companion font (David L. Brown), the merida font (Armando
 H. Marroquin), the pirate font (Klaus Wolf) and the chess usual font (Armando
 H. Marroquin). The original chess fonts and more details are available at
 http://www.enpassant.dk/chess/fonteng.htm
 The chess informant symbols font is used with permission from the Chess
-Informant publishing company (http://www.chessinformant.rs). The chess ole
-figurin font is from the ChessOLE project (http://www.chessole.de, David Frank).
+Informant publishing company (https://www.sahovski.com/). The chess ole figurin
+font is from the ChessOLE project (David Frank) and it is available at the en
+passant site (http://www.enpassant.dk/chess/fonteng.htm).
 
 Some of the PGN files for the examples are coming from "The Week in Chess" at
 http://www.theweekinchess.com (file twic944.pgn), from the scid project at
 http://scid.sourceforge.net (file tactics.pgn, with minor modifications), and
-from the Chess Informant publishing company at http://www.chessinformant.rs
-(file chess-informant-sample.pgn).
+from the Chess Informant publishing company at https://www.sahovski.com/ (file
+chess-informant-sample.pgn).
 
 The jscolor javascript code is maintained by Honza Odvarko
 (http://odvarko.cz/) and released under the GNU Lesser General Public License
@@ -510,7 +511,7 @@ See http://jscolor.com/
 
 The ECO code (http://en.wikipedia.org/wiki/Encyclopaedia_of_Chess_Openings) for
 game opening classification is a trademark of the Chess Informant publishing
-company (http://www.chessinformant.rs).
+company (https://www.sahovski.com/).
 
 
 The above items remains subject to their original licenses (if any).
