@@ -2313,7 +2313,7 @@ function formatPgnText() {
   var theObj = document.getElementById("pgnText");
   if (theObj) {
     if (theObj.value.replace(/{[^}]*}/g, " ").indexOf(";") != -1) {
-      if (!confirm('Warning: detected one or more occurrence of the ";" char, possibly starting a "rest of line" comment in the PGN data: the formatting optimization will likely corrupt PGN data containing "rest of line" comments.\n\nContinue?')) {
+      if (!confirm('Warning: detected one or more ";" chars possibly starting rest-of-line comments in the PGN data: the formatting optimization will likely corrupt PGN data containing rest-of-line comments.\n\nContinue?')) {
         return false;
       }
     }
