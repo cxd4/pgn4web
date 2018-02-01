@@ -3,7 +3,7 @@
 
 <!--
   pgn4web javascript chessboard
-  copyright (C) 2009-2016 Paolo Casaschi
+  copyright (C) 2009-2018 Paolo Casaschi
   see README file and http://pgn4web.casaschi.net
   for credits, license and more details
 -->
@@ -1812,7 +1812,7 @@ if something goes wrong, you might want to <i><a href="javascript:bug_report()">
 
 <textarea id="pgnText" class="textbox" style="background-color: #DDFFDD; scrollbar-base-color: #DDFFDD;" rows=15 onChange="update_pgnTextLength(); update_suggested_iframe_dimensions();"></textarea>
 <table cellspacing="0" cellpadding="0" width="100%"><tr>
-<td align="left"><label class="helptext" for="pgnText">enter PGN data, optionally <a class="helplink" href="" onClick="if (confirm('Strip PGN data?\n\nStripping PGN data will reduce the data size: the chessboard should still display correctly, however the resulting data will not be strictly compliant to the PGN standard.')) { stripPgnText(); } return false;">strip PGN data</a>, <a class="helplink" href="" onClick="if (pgnTextStripUndoValue) { if (confirm('Undo last PGN data strip?\n\nCurrent PGN data and any changes since the last strip will be lost.')) { pgnTextStripUndo(); } } else { alert('Undo data not available.'); } return false;">undo last strip</a></label></td>
+<td align="left"><label class="helptext" for="pgnText">enter PGN data; optionally optimize PGN data: <a class="helplink" href="" onClick="if (confirm('Strip PGN data?\n\nStripping PGN data will reduce the data size: the chessboard should still display correctly, however the resulting data will not be strictly compliant to the PGN standard.')) { stripPgnText(); } return false;">strip</a>, <a class="helplink" href="" onClick="if (confirm('Format PGN data?\n\nFormatting PGN data will make it easier to read: the chessboard should still display correctly, however the resulting data might not be strictly compliant to the PGN standard.\n\nWarning: PGN data formatting is an experimental feature and under unforseen circumstances your PGN data might be corrupted!')) { formatPgnText(); } return false;">format</a>, <a class="helplink" href="" onClick="if (pgnTextUndoValue) { if (confirm('Undo last PGN data optimization?\n\nCurrent PGN data and any changes since the last optimization will be lost.')) { pgnTextUndo(); } } else { alert('Undo data not available.'); } return false;">undo</a></label></td>
 <td align="right"><span class="helptext" id="pgnTextLength"></span></td>
 </tr></table>
 <p></p>
@@ -2229,7 +2229,7 @@ for (ii = 0; ii < theObj.length; ii++) {
 }
 
 
-var pgnTextStripUndoValue;
+var pgnTextUndoValue;
 
 function stripPgnText() {
   var theObj = document.getElementById("pgnText");
@@ -2300,7 +2300,7 @@ function stripPgnText() {
     strippedPgnText = strippedPgnText.replace(/(\n) +/g, "$1");
     strippedPgnText = strippedPgnText.replace(/(^\s+|\s+$)/g, ""); // remove leading/closing spaces
     if (strippedPgnText != theObj.value) {
-      pgnTextStripUndoValue = theObj.value;
+      pgnTextUndoValue = theObj.value;
       theObj.value = strippedPgnText;
       update_pgnTextLength();
     }
@@ -2309,12 +2309,69 @@ function stripPgnText() {
   return false;
 }
 
-function pgnTextStripUndo() {
+function formatPgnText() {
   var theObj = document.getElementById("pgnText");
-  if (theObj && pgnTextStripUndoValue) {
-    theObj.value = pgnTextStripUndoValue;
+  if (theObj) {
+    if (theObj.value.replace(/{[^}]*}/g, " ").indexOf(";") != -1) {
+      if (!confirm('Warning: detected one or more occurrence of the ";" char, possibly starting a "rest of line" comment in the PGN data: the formatting optimization will likely corrupt PGN data containing "rest of line" comments.\n\nContinue?')) {
+        return false;
+      }
+    }
+    pgnHeader = new Array();
+    pgnGame = new Array();
+    numberOfGames = -1;
+    pgnGameFromPgnText(theObj.value);
+    if (pgnGame.length === 0) {
+      pgnHeader[0] = "";
+      pgnGame[0] = theObj.value;
+      numberOfGames = 1;
+    }
+    var formattedPgnText = "", formattedHeader, formattedGame, formattedGameArray, maxLineLength = 78, thisLine, ii, jj;
+
+    for (ii = 0; ii < pgnGame.length; ii++) {
+      formattedGameArray = pgnGame[ii].replace(/\s+/g, " ").replace(/^\s+|\s+$/g, "").split(" ");
+      formattedGame = "";
+      thisLine = "";
+      for (jj = 0; jj < formattedGameArray.length; jj++) {
+        if (thisLine.length + formattedGameArray[jj].length < maxLineLength) {
+          if (thisLine.length > 0) { thisLine += " "; }
+          thisLine += formattedGameArray[jj];
+        } else {
+          if ((thisLine.length > 0) && (formattedGame.length > 0)) { formattedGame += "\n"; }
+          formattedGame += thisLine;
+          thisLine = formattedGameArray[jj];
+        }
+      }
+      if (thisLine.length > 0) {
+        if (formattedGame.length > 0) { formattedGame += "\n"; }
+        formattedGame += thisLine;
+      }
+
+      formattedHeader = pgnHeader[ii].replace(/\]\s+\[/g, "]\n[");
+      formattedPgnText += formattedHeader + "\n\n" + formattedGame;
+    }
+
+    formattedPgnText = formattedPgnText.replace(/;\s*$/, "");
+    formattedPgnText = formattedPgnText.replace(/ {2,}/g, " "); // reduce sequential spaces
+    formattedPgnText = formattedPgnText.replace(/(\n{2})\n+/g, "$1"); // reduce sequential empty lines
+    formattedPgnText = formattedPgnText.replace(/(\n) +/g, "$1");
+    formattedPgnText = formattedPgnText.replace(/(^\s+|\s+$)/g, ""); // remove leading/closing spaces
+    if (formattedPgnText != theObj.value) {
+      pgnTextUndoValue = theObj.value;
+      theObj.value = formattedPgnText;
+      update_pgnTextLength();
+    }
+    return true;
+  }
+  return false;
+}
+
+function pgnTextUndo() {
+  var theObj = document.getElementById("pgnText");
+  if (theObj && pgnTextUndoValue) {
+    theObj.value = pgnTextUndoValue;
     update_pgnTextLength();
-    pgnTextStripUndoValue = "";
+    pgnTextStripValue = "";
     return true;
   }
   return false;
