@@ -2303,6 +2303,8 @@ function stripPgnText() {
       pgnTextUndoValue = theObj.value;
       theObj.value = strippedPgnText;
       update_pgnTextLength();
+    } else {
+      alert("PGN data unchanged by stripping.");
     }
     return true;
   }
@@ -2360,6 +2362,15 @@ function formatPgnText() {
       pgnTextUndoValue = theObj.value;
       theObj.value = formattedPgnText;
       update_pgnTextLength();
+      var formattedPgnTextArray = formattedPgnText.split("\n");
+      for (ii = 0; ii < formattedPgnTextArray.length; ii++) {
+        if (formattedPgnTextArray[ii].length > maxLineLength) {
+          alert("Not all PGN data could be formatted to lines shorter than " + maxLineLength + " chars.");
+          break;
+        }
+      }
+    } else {
+      alert("PGN data unchanged by formatting.");
     }
     return true;
   }
