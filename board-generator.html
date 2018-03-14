@@ -157,8 +157,8 @@ function shorten_url_with_bitly(bitly_login, bitly_apiKey) {
           document.getElementById("shorturl_link_pointer").title = "right-click, copy and share the chessboard short url";
         } else {
           document.getElementById("shorturl_link_pointer").innerHTML = "failed generating short url";
-          document.getElementById("shorturl_link_pointer").href = "";
-          document.getElementById("shorturl_link_pointer").target = "";
+          document.getElementById("shorturl_link_pointer").href = iframeUrl;
+          document.getElementById("shorturl_link_pointer").target = "_blank";
           document.getElementById("shorturl_link_pointer").title = "possible failure causes: url shortening service unavailable, network error, outdated login/apiKey pair, outdated apis or something else; try again later and eventually file a pgn4web board generator bug report";
         }
       }
@@ -2251,7 +2251,7 @@ function stripPgnText() {
         for (jj = 0; jj < theTokens.length; jj++) {
           theMatch = theTokens[jj].match(/\[\s*(\w+)\s*"([^"]*)"\s*\]/);
           if ((theMatch[1] != "Variant") || (!theMatch[2].match(/^\s*(|chess|normal|standard)\s*$/))) {
-            if (theMatch[2] = theMatch[2].replace(/[?.]+/g, "").replace(/^\s+|\s+$/g, "")) { // remove ? from header tags
+            if (theMatch[2] = theMatch[2].replace(/(\?+.?)+/g, "").replace(/^\s+|\s+$/g, "")) { // remove ? from header tags
               strippedHeader += '[' + theMatch[1] + ' "' + theMatch[2] + '"]\n';
             }
           }
