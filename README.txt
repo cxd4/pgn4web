@@ -41,7 +41,7 @@ Features:
   different chessboard sizes
 - uses figurine fonts for chess moves and chess informant style symbols for
   comments and annotations
-- provides a chess viewer web service, see http://pgn4web-viewer.casaschi.net
+- provides a chess viewer web service, see http://pgn4web.casaschi.net/viewer/
 - provides a board generator web service for adding chess games to websites and
   blogs without any coding, see http://pgn4web-board-generator.casaschi.net
 - integrates with popular web platforms and services such as blogger, drupal,
@@ -233,7 +233,7 @@ using a given HTML code within the web page or blog.
 
 Just go to the board widget generator site on
   http://pgn4web-board-generator.casaschi.net
-the enter your PGN games and configure the options. The tool will
+then enter your PGN games and configure the options. The tool will
 automatically generate some HTML code that you can cut and paste in your web
 page or your blog.
 
