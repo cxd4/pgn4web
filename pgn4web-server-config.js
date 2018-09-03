@@ -1,6 +1,6 @@
 /*
  *  pgn4web javascript chessboard
- *  copyright (C) 2009-2012 Paolo Casaschi
+ *  copyright (C) 2009-2018 Paolo Casaschi
  *  see README file and http://pgn4web.casaschi.net
  *  for credits, license and more details
  */
@@ -15,7 +15,7 @@
 // the URL for the board widged to be used in the board-generator tool, default = "board.html"
 // used by: board-generator.html
 //
-var pgn4web_board_url = "board.html";
+var pgn4web_board_url;
 // var pgn4web_board_url = "http://pgn4web-board.casaschi.net/";
 //
 
